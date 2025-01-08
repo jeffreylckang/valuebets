@@ -1,0 +1,111 @@
+team_name,sport,team_id,sport_id
+Cincinnati Bengals,american-football,0,0
+San Francisco 49ers,american-football,1,0
+New England Patriots,american-football,2,0
+Chicago Bears,american-football,3,0
+Tampa Bay Buccaneers,american-football,4,0
+Washington Commanders,american-football,5,0
+Carolina Panthers,american-football,6,0
+Minnesota Vikings,american-football,7,0
+Las Vegas Raiders,american-football,8,0
+Los Angeles Rams,american-football,9,0
+Buffalo Bills,american-football,10,0
+Detroit Lions,american-football,11,0
+Indianapolis Colts,american-football,12,0
+Jacksonville Jaguars,american-football,13,0
+Tennessee Titans,american-football,14,0
+New York Giants,american-football,15,0
+Cleveland Browns,american-football,16,0
+Arizona Cardinals,american-football,17,0
+Baltimore Ravens,american-football,18,0
+New Orleans Saints,american-football,19,0
+Denver Broncos,american-football,20,0
+New York Jets,american-football,21,0
+Dallas Cowboys,american-football,22,0
+Miami Dolphins,american-football,23,0
+Seattle Seahawks,american-football,24,0
+Philadelphia Eagles,american-football,25,0
+Green Bay Packers,american-football,26,0
+Los Angeles Chargers,american-football,27,0
+Atlanta Falcons,american-football,28,0
+Pittsburgh Steelers,american-football,29,0
+Kansas City Chiefs,american-football,30,0
+Houston Texans,american-football,31,0
+Michael Irvin Team,american-football,32,0
+AFC,american-football,33,0
+NFC,american-football,34,0
+Cris Carter Team,american-football,35,0
+Sanders Team,american-football,36,0
+Brooklyn Nets,basketball,37,1
+Los Angeles Clippers,basketball,38,1
+Philadelphia 76ers,basketball,39,1
+Detroit Pistons,basketball,40,1
+Orlando Magic,basketball,41,1
+Cleveland Cavaliers,basketball,42,1
+Portland Trail Blazers,basketball,43,1
+Oklahoma City Thunder,basketball,44,1
+Chicago Bulls,basketball,45,1
+Boston Celtics,basketball,46,1
+New York Knicks,basketball,47,1
+Golden State Warriors,basketball,48,1
+Toronto Raptors,basketball,49,1
+Miami Heat,basketball,50,1
+Memphis Grizzlies,basketball,51,1
+Los Angeles Lakers,basketball,52,1
+Milwaukee Bucks,basketball,53,1
+Houston Rockets,basketball,54,1
+Dallas Mavericks,basketball,55,1
+Washington Wizards,basketball,56,1
+San Antonio Spurs,basketball,57,1
+Atlanta Hawks,basketball,58,1
+Denver Nuggets,basketball,59,1
+Sacramento Kings,basketball,60,1
+Utah Jazz,basketball,61,1
+Indiana Pacers,basketball,62,1
+Charlotte Hornets,basketball,63,1
+Phoenix Suns,basketball,64,1
+Minnesota Timberwolves,basketball,65,1
+New Orleans Pelicans,basketball,66,1
+Team LeBron,basketball,67,1
+Team World,basketball,68,1
+Team USA,basketball,69,1
+Team Giannis,basketball,70,1
+West,basketball,71,1
+East,basketball,72,1
+Team Durant,basketball,73,1
+Team Stephen,basketball,74,1
+Brighton,football,75,2
+Tottenham,football,76,2
+Newcastle,football,77,2
+Nottingham,football,78,2
+Arsenal,football,79,2
+Leicester,football,80,2
+Sunderland,football,81,2
+Liverpool,football,82,2
+Manchester Utd,football,83,2
+Watford,football,84,2
+Manchester City,football,85,2
+Chelsea,football,86,2
+Swansea,football,87,2
+Norwich,football,88,2
+Southampton,football,89,2
+Bournemouth,football,90,2
+Hull,football,91,2
+Crystal Palace,football,92,2
+Wolves,football,93,2
+West Ham,football,94,2
+Burnley,football,95,2
+Huddersfield,football,96,2
+Fulham,football,97,2
+Stoke,football,98,2
+Leeds,football,99,2
+QPR,football,100,2
+Sheffield Utd,football,101,2
+Cardiff,football,102,2
+Aston Villa,football,103,2
+Everton,football,104,2
+Brentford,football,105,2
+Luton,football,106,2
+Middlesbrough,football,107,2
+West Brom,football,108,2
+Jerry Rice Team,american-football,109,0
