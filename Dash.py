@@ -1,1177 +1,840 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "id": "01f2c421-446a-44ba-adca-602ad54b1bca",
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #7fbfbf; text-decoration-color: #7fbfbf\">[01/08/25 14:39:23] </span><span style=\"color: #000080; text-decoration-color: #000080\">INFO    </span> No custom team name replacements found. You can configure these in       <a href=\"file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_config.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">_config.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_config.py#90\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">90</span></a>\n",
-       "<span style=\"color: #7fbfbf; text-decoration-color: #7fbfbf\">                    </span>         <span style=\"color: #800080; text-decoration-color: #800080\">/Users/jeffreykang/soccerdata/config/</span><span style=\"color: #ff00ff; text-decoration-color: #ff00ff\">teamname_replacements.json.</span>         <span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">             </span>\n",
-       "</pre>\n"
-      ],
-      "text/plain": [
-       "\u001b[2;36m[01/08/25 14:39:23]\u001b[0m\u001b[2;36m \u001b[0m\u001b[34mINFO    \u001b[0m No custom team name replacements found. You can configure these in       \u001b]8;id=407491;file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_config.py\u001b\\\u001b[2m_config.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=974357;file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_config.py#90\u001b\\\u001b[2m90\u001b[0m\u001b]8;;\u001b\\\n",
-       "\u001b[2;36m                    \u001b[0m         \u001b[35m/Users/jeffreykang/soccerdata/config/\u001b[0m\u001b[95mteamname_replacements.json.\u001b[0m         \u001b[2m             \u001b[0m\n"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #7fbfbf; text-decoration-color: #7fbfbf\">                    </span><span style=\"color: #000080; text-decoration-color: #000080\">INFO    </span> No custom league dict found. You can configure additional leagues in    <a href=\"file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_config.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">_config.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_config.py#196\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">196</span></a>\n",
-       "<span style=\"color: #7fbfbf; text-decoration-color: #7fbfbf\">                    </span>         <span style=\"color: #800080; text-decoration-color: #800080\">/Users/jeffreykang/soccerdata/config/</span><span style=\"color: #ff00ff; text-decoration-color: #ff00ff\">league_dict.json.</span>                  <span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">              </span>\n",
-       "</pre>\n"
-      ],
-      "text/plain": [
-       "\u001b[2;36m                   \u001b[0m\u001b[2;36m \u001b[0m\u001b[34mINFO    \u001b[0m No custom league dict found. You can configure additional leagues in    \u001b]8;id=288564;file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_config.py\u001b\\\u001b[2m_config.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=132997;file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_config.py#196\u001b\\\u001b[2m196\u001b[0m\u001b]8;;\u001b\\\n",
-       "\u001b[2;36m                    \u001b[0m         \u001b[35m/Users/jeffreykang/soccerdata/config/\u001b[0m\u001b[95mleague_dict.json.\u001b[0m                  \u001b[2m              \u001b[0m\n"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #7fbfbf; text-decoration-color: #7fbfbf\">                    </span><span style=\"color: #000080; text-decoration-color: #000080\">INFO    </span> Saving cached data to <span style=\"color: #800080; text-decoration-color: #800080\">/Users/jeffreykang/soccerdata/data/</span><span style=\"color: #ff00ff; text-decoration-color: #ff00ff\">FBref</span>          <a href=\"file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_common.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">_common.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_common.py#263\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">263</span></a>\n",
-       "</pre>\n"
-      ],
-      "text/plain": [
-       "\u001b[2;36m                   \u001b[0m\u001b[2;36m \u001b[0m\u001b[34mINFO    \u001b[0m Saving cached data to \u001b[35m/Users/jeffreykang/soccerdata/data/\u001b[0m\u001b[95mFBref\u001b[0m          \u001b]8;id=310232;file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_common.py\u001b\\\u001b[2m_common.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=994836;file:///opt/anaconda3/lib/python3.12/site-packages/soccerdata/_common.py#263\u001b\\\u001b[2m263\u001b[0m\u001b]8;;\u001b\\\n"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "/opt/anaconda3/lib/python3.12/site-packages/soccerdata/fbref.py:159: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.\n",
-      "  pd.concat(dfs)\n"
-     ]
-    }
-   ],
-   "source": [
-    "from dash import Dash, html, dcc, Input, Output, State, callback\n",
-    "import dash_bootstrap_components as dbc\n",
-    "import torch\n",
-    "import torch.nn as nn\n",
-    "import os\n",
-    "import pandas as pd\n",
-    "import json\n",
-    "from sklearn.preprocessing import StandardScaler\n",
-    "import numpy as np\n",
-    "from nba_api.stats.endpoints import teamgamelog\n",
-    "from nba_api.stats.static import teams\n",
-    "import time\n",
-    "from datetime import datetime\n",
-    "import requests\n",
-    "import soccerdata as sd\n",
-    "from pathlib import Path\n",
-    "\n",
-    "# Define the team name replacements\n",
-    "teamname_replacements = {\n",
-    "    \"Liverpool\": [\"Liverpool\"],\n",
-    "    \"Arsenal\": [\"Arsenal\"],\n",
-    "    \"Manchester City\": [\"Manchester City\"],\n",
-    "    \"Newcastle\": [\"Newcastle Utd\"],\n",
-    "    \"Chelsea\": [\"Chelsea\"],\n",
-    "    \"Aston Villa\": [\"Aston Villa\"],\n",
-    "    \"Nottingham\": [\"Nott'ham Forest\"],\n",
-    "    \"Bournemouth\": [\"Bournemouth\"],\n",
-    "    \"Tottenham\": [\"Tottenham\"],\n",
-    "    \"Fulham\": [\"Fulham\"],\n",
-    "    \"Brighton\": [\"Brighton\"],\n",
-    "    \"Manchester Utd\": [\"Manchester Utd\"],\n",
-    "    \"Crystal Palace\": [\"Crystal Palace\"],\n",
-    "    \"Brentford\": [\"Brentford\"],\n",
-    "    \"West Ham\": [\"West Ham\"],\n",
-    "    \"Everton\": [\"Everton\"],\n",
-    "    \"Wolves\": [\"Wolves\"],\n",
-    "    \"Ipswich\": [\"Ipswich Town\"],\n",
-    "    \"Leicester\": [\"Leicester City\"],\n",
-    "    \"Southampton\": [\"Southampton\"]}\n",
-    "\n",
-    "# Function to get canonical team name or variations\n",
-    "def get_canonical_team_name(input_team_name, replacements):\n",
-    "    \"\"\"\n",
-    "    Find the canonical team name and variations from the teamname_replacements dictionary.\n",
-    "    \"\"\"\n",
-    "    for canonical_name, variations in replacements.items():\n",
-    "        if input_team_name in variations:\n",
-    "            return canonical_name\n",
-    "    raise ValueError(f\"Team name '{input_team_name}' not found in teamname_replacements.\")\n",
-    "\n",
-    "# Load Model\n",
-    "class NCFBinary2(nn.Module):\n",
-    "    def __init__(self, num_teams, num_features, embedding_dim=16, dropout_rate=0.2, num_sports=3):\n",
-    "        super(NCFBinary2, self).__init__()\n",
-    "        \n",
-    "        # Team embeddings\n",
-    "        self.home_team_embed = nn.Embedding(num_teams, embedding_dim)\n",
-    "        self.away_team_embed = nn.Embedding(num_teams, embedding_dim)\n",
-    "        \n",
-    "        # Additional game features\n",
-    "        self.fc_game_features = nn.Linear(num_features, embedding_dim)\n",
-    "        \n",
-    "        # Shared dense layers\n",
-    "        self.shared_fc = nn.Sequential(\n",
-    "            nn.Linear(embedding_dim * 3, 128),\n",
-    "            nn.BatchNorm1d(128),\n",
-    "            nn.ReLU(),\n",
-    "            nn.Dropout(dropout_rate))\n",
-    "            #nn.Linear(256, 128),\n",
-    "            #nn.BatchNorm1d(128),\n",
-    "            #nn.ReLU(),\n",
-    "            #nn.Dropout(dropout_rate))\n",
-    "        \n",
-    "        # Sport-specific layers\n",
-    "        self.sport_specific_layers = nn.ModuleDict({\n",
-    "            f\"sport_{i}\": nn.Sequential(\n",
-    "                nn.Linear(128, 64),\n",
-    "                nn.LayerNorm(64),\n",
-    "                nn.ReLU(),\n",
-    "                nn.Dropout(dropout_rate))\n",
-    "                #nn.Linear(64, 32),\n",
-    "                #nn.LayerNorm(32),\n",
-    "                #nn.ReLU(),\n",
-    "                #nn.Dropout(dropout_rate))\n",
-    "            for i in range(num_sports)})\n",
-    "        \n",
-    "        # Output layers for home and away win probabilities\n",
-    "        self.final_output = nn.Linear(64, 1)\n",
-    "\n",
-    "    def forward(self, home_team, away_team, game_features, sport_id):\n",
-    "        home_embed = self.home_team_embed(home_team)\n",
-    "        away_embed = self.away_team_embed(away_team)\n",
-    "        \n",
-    "        # Process game-specific features\n",
-    "        game_features_embed = torch.relu(self.fc_game_features(game_features))\n",
-    "        \n",
-    "        # Concatenate all inputs\n",
-    "        x = torch.cat([home_embed, away_embed, game_features_embed], dim=-1)\n",
-    "        \n",
-    "        # Pass through shared layers\n",
-    "        shared_output = self.shared_fc(x)\n",
-    "        \n",
-    "        # Initialize tensor to store sport-specific outputs\n",
-    "        sport_outputs = torch.zeros(shared_output.size(0), 64, device=shared_output.device)\n",
-    "\n",
-    "        # Process sport-specific logic\n",
-    "        for i in range(len(self.sport_specific_layers)):\n",
-    "            mask = (sport_id == i)\n",
-    "            if mask.any():\n",
-    "                sport_specific_layer = self.sport_specific_layers[f\"sport_{i}\"]\n",
-    "                sport_outputs[mask] = sport_specific_layer(shared_output[mask])\n",
-    "        \n",
-    "        # Apply sigmoid activation to final output\n",
-    "        home_win_prob = torch.sigmoid(self.final_output(sport_outputs))\n",
-    "        \n",
-    "        return home_win_prob\n",
-    "\n",
-    "# EPL HELPER FUNCTIONS\n",
-    "fbref = sd.FBref(leagues=\"ENG-Premier League\", seasons=2024)\n",
-    "\n",
-    "# Fetch the full schedule for the league\n",
-    "epl_schedule = fbref.read_schedule()\n",
-    "epl_schedule = epl_schedule.reset_index()\n",
-    "\n",
-    "# Parse the date column\n",
-    "epl_schedule[\"date\"] = pd.to_datetime(epl_schedule[\"date\"])\n",
-    "\n",
-    "# Function to calculate game result for a specific team\n",
-    "def calculate_epl_result(row, team_name):\n",
-    "    \"\"\"\n",
-    "    Calculate the result for a given team in a match.\n",
-    "    \"\"\"\n",
-    "    if pd.isna(row[\"score\"]):\n",
-    "        return None  # Skip games with missing scores\n",
-    "    if (row[\"home_team\"] == team_name and row[\"score\"][0] > row[\"score\"][-1]):\n",
-    "        return \"W\"\n",
-    "    elif (row[\"away_team\"] == team_name and row[\"score\"][-1] > row[\"score\"][0]):\n",
-    "        return \"W\"\n",
-    "    elif (row[\"home_team\"] == team_name and row[\"score\"][0] < row[\"score\"][-1]):\n",
-    "        return \"L\"\n",
-    "    elif (row[\"away_team\"] == team_name and row[\"score\"][-1] < row[\"score\"][0]):\n",
-    "        return \"L\"\n",
-    "    else:\n",
-    "        return \"D\"\n",
-    "\n",
-    "# Function to calculate streaks for home/away games\n",
-    "def calculate_epl_streaks(games):\n",
-    "    \"\"\"\n",
-    "    Calculate win/loss streaks for a team from a subset of games (home or away).\n",
-    "    \"\"\"\n",
-    "    if len(games) < 3:\n",
-    "        return {\"win_streak_3\": False, \"loss_streak_3\": False}\n",
-    "\n",
-    "    # Exclude draws\n",
-    "    epl_streak_games = games[games[\"result\"] != \"D\"]\n",
-    "\n",
-    "    # Sort games by date in descending order and take the last 3 non-draw games\n",
-    "    epl_streak_games = epl_streak_games.sort_values(by=\"date\", ascending=False).head(3)\n",
-    "\n",
-    "    # Determine win/loss\n",
-    "    epl_streak_games[\"win\"] = epl_streak_games[\"result\"] == \"W\"\n",
-    "\n",
-    "    # Calculate win streak: True if all last 3 games are wins\n",
-    "    epl_win_streak = epl_streak_games[\"win\"].all()\n",
-    "\n",
-    "    # Calculate loss streak: True if all last 3 games are losses\n",
-    "    epl_loss_streak = (~epl_streak_games[\"win\"]).all()\n",
-    "\n",
-    "    return {\"win_streak_3\": epl_win_streak, \"loss_streak_3\": epl_loss_streak}\n",
-    "\n",
-    "# Analyze streaks for a team\n",
-    "def epl_analyze_team_streaks(input_team_name):\n",
-    "    \"\"\"\n",
-    "    Analyze home and away streaks for a given team.\n",
-    "    \"\"\"\n",
-    "    team_name = get_canonical_team_name(input_team_name, teamname_replacements)\n",
-    "    \n",
-    "    team_epl_games = epl_schedule[\n",
-    "        (epl_schedule[\"home_team\"] == team_name) | (epl_schedule[\"away_team\"] == team_name)]\n",
-    "\n",
-    "    today = pd.Timestamp(datetime.now().date())\n",
-    "    past_epl_games = team_epl_games[team_epl_games[\"date\"] < today]\n",
-    "\n",
-    "    # Apply result calculation\n",
-    "    past_epl_games = past_epl_games.copy()  # Avoid modifying the original DataFrame\n",
-    "    past_epl_games[\"result\"] = past_epl_games.apply(lambda row: calculate_epl_result(row, team_name), axis=1)\n",
-    "    past_epl_games = past_epl_games.dropna(subset=[\"result\"])\n",
-    "\n",
-    "    # Separate home and away games\n",
-    "    home_epl_games = past_epl_games[past_epl_games[\"home_team\"] == team_name]\n",
-    "    away_epl_games = past_epl_games[past_epl_games[\"away_team\"] == team_name]\n",
-    "\n",
-    "    # Calculate streaks for home and away games\n",
-    "    home_epl_streak_metrics = calculate_epl_streaks(home_epl_games)\n",
-    "    away_epl_streak_metrics = calculate_epl_streaks(away_epl_games)\n",
-    "\n",
-    "    return home_epl_streak_metrics, away_epl_streak_metrics\n",
-    "\n",
-    "    # Display results\n",
-    "    # print(f\"Team: {team_name}\")\n",
-    "    # print(\"\\nMost Recent 3 Home Games (Excluding Draws):\")\n",
-    "    # print(home_epl_games[home_epl_games[\"result\"] != \"D\"].sort_values(by=\"date\", ascending=False).head(3)[\n",
-    "    #     [\"date\", \"home_team\", \"away_team\", \"score\", \"result\"]])\n",
-    "\n",
-    "    # print(\"\\nMost Recent 3 Away Games (Excluding Draws):\")\n",
-    "    # print(away_epl_games[away_epl_games[\"result\"] != \"D\"].sort_values(by=\"date\", ascending=False).head(3)[\n",
-    "    #     [\"date\", \"home_team\", \"away_team\", \"score\", \"result\"]])\n",
-    "\n",
-    "    # print(\"\\nStreak Metrics:\")\n",
-    "    # print(f\"Home Win Streak (Last 3 Games): {home_epl_streak_metrics['win_streak_3']}\")\n",
-    "    # print(f\"Home Loss Streak (Last 3 Games): {home_epl_streak_metrics['loss_streak_3']}\")\n",
-    "    # print(f\"Away Win Streak (Last 3 Games): {away_epl_streak_metrics['win_streak_3']}\")\n",
-    "    # print(f\"Away Loss Streak (Last 3 Games): {away_epl_streak_metrics['loss_streak_3']}\")\n",
-    "\n",
-    "# Example usage\n",
-    "#team_name = \"Wolves\"\n",
-    "#epl_analyze_team_streaks(team_name)\n",
-    "\n",
-    "# NFL HELPER FUNCTIONS\n",
-    "def fetch_nfl_scoreboard_data(start_date=None, end_date=None):\n",
-    "    \"\"\"\n",
-    "    Fetch NFL scoreboard data for a specific date range or year.\n",
-    "    \"\"\"\n",
-    "    nfl_url = \"https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard\"\n",
-    "    nfl_params = {\"dates\": start_date if not end_date else f\"{start_date}-{end_date}\", \"seasontype\": 2}\n",
-    "    nfl_response = requests.get(nfl_url, params=nfl_params)\n",
-    "\n",
-    "    if nfl_response.status_code == 200:\n",
-    "        return nfl_response.json()\n",
-    "    else:\n",
-    "        raise ValueError(f\"Failed to fetch NFL data. Status code: {nfl_response.status_code}\")\n",
-    "\n",
-    "def extract_nfl_recent_games(scoreboard_data, team_name, n_games=18):\n",
-    "    \"\"\"\n",
-    "    Extract the most recent NFL games for a specific team.\n",
-    "    \"\"\"\n",
-    "    games = scoreboard_data.get('events', [])\n",
-    "    nfl_recent_games = []\n",
-    "\n",
-    "    for game in games:\n",
-    "        competition = game.get('competitions', [])[0]\n",
-    "        competitors = competition.get('competitors', [])\n",
-    "        \n",
-    "        # Match the team name robustly\n",
-    "        for competitor in competitors:\n",
-    "            if competitor['team']['displayName'].strip().lower() == team_name.strip().lower():\n",
-    "                # Found a match for the team\n",
-    "                opponent = next(\n",
-    "                    comp['team']['displayName']\n",
-    "                    for comp in competitors if comp['team']['displayName'].strip().lower() != team_name.strip().lower())\n",
-    "                nfl_team_game = {\n",
-    "                    \"date\": pd.to_datetime(game['date']),\n",
-    "                    \"opponent\": opponent,\n",
-    "                    \"team\": competitor['team']['displayName'],\n",
-    "                    \"team_score\": int(competitor.get('score', 0)),\n",
-    "                    \"opponent_score\": int(\n",
-    "                        next(\n",
-    "                            comp['score'] for comp in competitors\n",
-    "                            if comp['team']['displayName'].strip().lower() != team_name.strip().lower())),\n",
-    "                    \"win\": competitor.get('winner', False),\n",
-    "                    \"home_away\": \"home\" if competitor['homeAway'] == \"home\" else \"away\"}\n",
-    "                nfl_recent_games.append(nfl_team_game)\n",
-    "                break\n",
-    "\n",
-    "    # Sort games by date in descending order (most recent to oldest)\n",
-    "    nfl_recent_games = sorted(nfl_recent_games, key=lambda x: x['date'], reverse=True)\n",
-    "\n",
-    "    # Debugging after sorting\n",
-    "    print(\"\\nExtracted Games After Sorting:\")\n",
-    "    for game in nfl_recent_games:\n",
-    "        print(f\"Date: {game['date']}, Opponent: {game['opponent']}, Home/Away: {game['home_away']}, Win: {game['win']}\")\n",
-    "        \n",
-    "    return nfl_recent_games[:n_games]  # Return only the most recent `n_games`\n",
-    "\n",
-    "def calculate_nfl_streaks(nfl_games, nfl_home_or_away=None):\n",
-    "    \"\"\"\n",
-    "    Calculate win/loss streaks for a specific team from its recent games.\n",
-    "    \"\"\"\n",
-    "    # Filter games based on home or away criteria if provided\n",
-    "    if nfl_home_or_away:\n",
-    "        nfl_games = [game for game in nfl_games if game[\"home_away\"] == nfl_home_or_away]\n",
-    "\n",
-    "    # Sort games chronologically (oldest to most recent)\n",
-    "    nfl_games = sorted(nfl_games, key=lambda x: x['date'])\n",
-    "\n",
-    "    # Exclude draws\n",
-    "    nfl_non_draw_games = [game for game in nfl_games if game[\"team_score\"] != game[\"opponent_score\"]]\n",
-    "\n",
-    "    if len(nfl_non_draw_games) < 3:\n",
-    "        return {\"win_streak_3\": False, \"loss_streak_3\": False}\n",
-    "\n",
-    "    # Take the most recent 3 non-draw games (chronological order maintained)\n",
-    "    nfl_streak_games = nfl_non_draw_games[-3:]\n",
-    "\n",
-    "    # Determine win/loss\n",
-    "    nfl_win_streak = all(game[\"win\"] for game in nfl_streak_games)\n",
-    "    nfl_loss_streak = all(not game[\"win\"] for game in nfl_streak_games)\n",
-    "\n",
-    "    return {\"win_streak_3\": nfl_win_streak, \"loss_streak_3\": nfl_loss_streak}\n",
-    "\n",
-    "def nfl_analyze_team_streaks(nfl_team_name, start_date=None, end_date=None):\n",
-    "    \"\"\"\n",
-    "    Analyze home and away streaks for a given NFL team.\n",
-    "    \"\"\"\n",
-    "    nfl_scoreboard_data = fetch_nfl_scoreboard_data(start_date=20241201, end_date=20250131)\n",
-    "    nfl_recent_games = extract_nfl_recent_games(nfl_scoreboard_data, nfl_team_name)\n",
-    "\n",
-    "    # Separate home and away games\n",
-    "    nfl_home_games = [game for game in nfl_recent_games if game[\"home_away\"] == \"home\"]\n",
-    "    nfl_away_games = [game for game in nfl_recent_games if game[\"home_away\"] == \"away\"]\n",
-    "\n",
-    "    # Exclude draws\n",
-    "    nfl_home_games_non_draw = [game for game in nfl_home_games if game[\"team_score\"] != game[\"opponent_score\"]]\n",
-    "    nfl_away_games_non_draw = [game for game in nfl_away_games if game[\"team_score\"] != game[\"opponent_score\"]]\n",
-    "\n",
-    "    # Debug: Print the last 3 home and away games (excluding draws)\n",
-    "    print(\"\\nLast 3 Home Games (Excluding Draws):\")\n",
-    "    for game in nfl_home_games_non_draw[:3]:  # Most recent 3 home games\n",
-    "        print(f\"Date: {game['date']}, Opponent: {game['opponent']}, Score: {game['team_score']}-{game['opponent_score']}, Win: {game['win']}\")\n",
-    "\n",
-    "    print(\"\\nLast 3 Away Games (Excluding Draws):\")\n",
-    "    for game in nfl_away_games_non_draw[:3]:  # Most recent 3 away games\n",
-    "        print(f\"Date: {game['date']}, Opponent: {game['opponent']}, Score: {game['team_score']}-{game['opponent_score']}, Win: {game['win']}\")\n",
-    "\n",
-    "    # Calculate streaks for home and away games\n",
-    "    nfl_home_streak_metrics = calculate_nfl_streaks(nfl_home_games_non_draw)\n",
-    "    nfl_away_streak_metrics = calculate_nfl_streaks(nfl_away_games_non_draw)\n",
-    "\n",
-    "    return nfl_home_streak_metrics, nfl_away_streak_metrics\n",
-    "\n",
-    "# Example Usage\n",
-    "# nfl_team_name = \"Cleveland Browns\"  \n",
-    "# nfl_home_streak, nfl_away_streak = nfl_analyze_team_streaks(nfl_team_name)\n",
-    "\n",
-    "# print(f\"\\nStreak Metrics for {nfl_team_name}:\")\n",
-    "# print(f\"Home Win Streak (Last 3 Games): {nfl_home_streak['win_streak_3']}\")\n",
-    "# print(f\"Home Loss Streak (Last 3 Games): {nfl_home_streak['loss_streak_3']}\")\n",
-    "# print(f\"Away Win Streak (Last 3 Games): {nfl_away_streak['win_streak_3']}\")\n",
-    "# print(f\"Away Loss Streak (Last 3 Games): {nfl_away_streak['loss_streak_3']}\")\n",
-    "\n",
-    "# NBA HELPER FUNCTIONS\n",
-    "# Initialize team lookup table\n",
-    "nba_team_lookup = pd.DataFrame(teams.get_teams())\n",
-    "\n",
-    "# Helper Functions\n",
-    "def get_nba_team_id_by_fullname(fullname):\n",
-    "    \"\"\"\n",
-    "    Get the NBA team ID from the full team name using nba_team_lookup.\n",
-    "    \"\"\"\n",
-    "    # Check for matches in the full_name column\n",
-    "    matches_full_name = nba_team_lookup[nba_team_lookup['full_name'].str.contains(fullname, case=False, na=False)]\n",
-    "    if not matches_full_name.empty:\n",
-    "        return matches_full_name.iloc[0]['id']\n",
-    "    else:\n",
-    "        raise ValueError(f\"NBA team full name '{fullname}' not found in lookup.\")\n",
-    "\n",
-    "def fetch_nba_team_recent_games(team_id, n_games=3, season='2024-25'):\n",
-    "    \"\"\"\n",
-    "    Fetch the most recent games for an NBA team using nba_api.\n",
-    "    \"\"\"\n",
-    "    team_games = teamgamelog.TeamGameLog(team_id=team_id, season=season).get_data_frames()[0]\n",
-    "    \n",
-    "    # Convert 'GAME_DATE' to datetime format for proper sorting\n",
-    "    team_games['GAME_DATE'] = pd.to_datetime(team_games['GAME_DATE'], errors='coerce')\n",
-    "    \n",
-    "    # Drop rows with invalid dates\n",
-    "    team_games = team_games.dropna(subset=['GAME_DATE'])\n",
-    "\n",
-    "    # Sort by GAME_DATE in descending order and fetch the most recent `n_games`\n",
-    "    nba_recent_games = team_games.sort_values(by='GAME_DATE', ascending=False).head(n_games)\n",
-    "    return nba_recent_games\n",
-    "\n",
-    "def calculate_nba_streak_metrics(recent_games):\n",
-    "    \"\"\"\n",
-    "    Calculate win/loss streaks for the last 3 NBA games.\n",
-    "    \"\"\"\n",
-    "    # Add a binary win/loss indicator\n",
-    "    recent_games['NBA_WIN'] = recent_games['WL'].apply(lambda x: 1 if x == 'W' else 0)\n",
-    "    recent_games['NBA_LOSS'] = recent_games['WL'].apply(lambda x: 1 if x == 'L' else 0)\n",
-    "\n",
-    "    # Calculate win streak: True if all last 3 games are wins\n",
-    "    recent_games['NBA_WIN_STREAK_3'] = (\n",
-    "        len(recent_games) >= 3 and\n",
-    "        all(recent_games['WL'].iloc[:3] == 'W'))\n",
-    "\n",
-    "    # Calculate loss streak: True if all last 3 games are losses\n",
-    "    recent_games['NBA_LOSS_STREAK_3'] = (\n",
-    "        len(recent_games) >= 3 and\n",
-    "        all(recent_games['WL'].iloc[:3] == 'L'))\n",
-    "\n",
-    "    return recent_games\n",
-    "\n",
-    "def get_nba_team_recent_stats(fullname, season='2024-25'):\n",
-    "    \"\"\"\n",
-    "    Fetch recent NBA games and calculate metrics for a specific team.\n",
-    "    \"\"\"\n",
-    "    team_id = get_nba_team_id_by_fullname(fullname)\n",
-    "    nba_recent_games = fetch_nba_team_recent_games(team_id, n_games=3, season=season)\n",
-    "    nba_recent_games = calculate_nba_streak_metrics(nba_recent_games)\n",
-    "    return nba_recent_games\n",
-    "\n",
-    "# nba_team_nickname = \"Thunder\"  # Replace with any valid NBA team nickname\n",
-    "# nba_recent_stats = get_nba_team_recent_stats(nba_team_nickname)\n",
-    "# print(nba_recent_stats[['GAME_DATE', 'NBA_WIN_STREAK_3', 'NBA_LOSS_STREAK_3']])\n",
-    "\n",
-    "# Load function to calculate Avg_odds_ratio\n",
-    "def adjusted_odds_ratio(home_odds, away_odds):\n",
-    "    # Ensure inputs are floats and handle cases where odds might be zero or non-numeric\n",
-    "    try:\n",
-    "        home_odds = float(home_odds)\n",
-    "        away_odds = float(away_odds)\n",
-    "        if home_odds == 0 or away_odds == 0:\n",
-    "            raise ValueError(\"Odds cannot be zero.\")\n",
-    "    except ValueError as e:\n",
-    "        return None  # or return a default value or message indicating the issue\n",
-    "\n",
-    "    if (home_odds > 0 and away_odds < 0) or (home_odds < 0 and away_odds > 0):\n",
-    "        return abs(home_odds) / abs(away_odds)\n",
-    "    else:\n",
-    "        return home_odds / away_odds\n",
-    "\n",
-    "def scale_features(features_dict, home_team, away_team, home_odds, away_odds, loaded_params, game_features, sport_id):\n",
-    "    try:\n",
-    "        # Elo ratings dictionaries\n",
-    "        elo_ratings = {\n",
-    "            1: nba_elo_ratings,\n",
-    "            0: nfl_elo_ratings,\n",
-    "            2: epl_elo_ratings}\n",
-    "\n",
-    "        # Scale home and away odds\n",
-    "        mean_avg_home_odds = loaded_params['means'][0]\n",
-    "        std_avg_home_odds = loaded_params['stds'][0]\n",
-    "        scaled_avg_home_odds = (home_odds - mean_avg_home_odds) / std_avg_home_odds\n",
-    "\n",
-    "        mean_avg_away_odds = loaded_params['means'][1]\n",
-    "        std_avg_away_odds = loaded_params['stds'][1]\n",
-    "        scaled_avg_away_odds = (away_odds - mean_avg_away_odds) / std_avg_away_odds\n",
-    "\n",
-    "        # Compute odds_ratio and scale it\n",
-    "        odds_ratio = adjusted_odds_ratio(home_odds, away_odds)\n",
-    "        mean_avg_odds_ratio = loaded_params['means'][2]\n",
-    "        std_avg_odds_ratio = loaded_params['stds'][2]\n",
-    "        scaled_avg_odds_ratio = (odds_ratio - mean_avg_odds_ratio) / std_avg_odds_ratio\n",
-    "\n",
-    "        # Initialize streaks to defaults\n",
-    "        hteam_w_streak, hteam_l_streak, ateam_w_streak, ateam_l_streak = 0, 0, 0, 0\n",
-    "\n",
-    "        # Fetch sport-specific streaks\n",
-    "        if sport_id == 2:  # EPL\n",
-    "            home_team = get_canonical_team_name(home_team, teamname_replacements)\n",
-    "            away_team = get_canonical_team_name(away_team, teamname_replacements)\n",
-    "            home_streaks, _ = epl_analyze_team_streaks(home_team)\n",
-    "            away_streaks, _ = epl_analyze_team_streaks(away_team)\n",
-    "            hteam_w_streak = int(home_streaks['win_streak_3'])\n",
-    "            hteam_l_streak = int(home_streaks['loss_streak_3'])\n",
-    "            ateam_w_streak = int(away_streaks['win_streak_3'])\n",
-    "            ateam_l_streak = int(away_streaks['loss_streak_3'])\n",
-    "        elif sport_id == 1:  # NBA\n",
-    "            nba_home_stats = get_nba_team_recent_stats(home_team)\n",
-    "            nba_away_stats = get_nba_team_recent_stats(away_team)\n",
-    "            hteam_w_streak = int(nba_home_stats['NBA_WIN_STREAK_3'].iloc[-1])\n",
-    "            hteam_l_streak = int(nba_home_stats['NBA_LOSS_STREAK_3'].iloc[-1])\n",
-    "            ateam_w_streak = int(nba_away_stats['NBA_WIN_STREAK_3'].iloc[-1])\n",
-    "            ateam_l_streak = int(nba_away_stats['NBA_LOSS_STREAK_3'].iloc[-1])\n",
-    "        elif sport_id == 0:  # NFL\n",
-    "            home_streaks, away_streaks = nfl_analyze_team_streaks(home_team), nfl_analyze_team_streaks(away_team)\n",
-    "            hteam_w_streak = int(home_streaks['win_streak_3'])\n",
-    "            hteam_l_streak = int(home_streaks['loss_streak_3'])\n",
-    "            ateam_w_streak = int(away_streaks['win_streak_3'])\n",
-    "            ateam_l_streak = int(away_streaks['loss_streak_3'])\n",
-    "\n",
-    "        # Fetch Elo ratings, default to 1500 if not found\n",
-    "        home_team_elo = elo_ratings.get(sport_id, {}).get(home_team, 1500)\n",
-    "        away_team_elo = elo_ratings.get(sport_id, {}).get(away_team, 1500)\n",
-    "        elo_diff = home_team_elo - away_team_elo\n",
-    "        elo_discrepancy = int(pd.cut([elo_diff], bins=[-float('inf'), -50, 50, float('inf')], labels=[-1, 0, 1])[0])\n",
-    "\n",
-    "        home_favored_by_odds = int(home_odds < away_odds)\n",
-    "        home_favored_by_elo = int(home_team_elo > away_team_elo)\n",
-    "        away_favored_by_odds = int(home_odds > away_odds)\n",
-    "        away_favored_by_elo = int(away_team_elo > home_team_elo)\n",
-    "        home_odds_elo_mismatch = int(home_favored_by_odds != home_favored_by_elo)\n",
-    "        away_odds_elo_mismatch = int(away_favored_by_odds != away_favored_by_elo)\n",
-    "\n",
-    "        # Extract unscaled features\n",
-    "        unscaled_features = [\n",
-    "            hteam_w_streak, hteam_l_streak, ateam_w_streak, ateam_l_streak,\n",
-    "            features_dict['home_wr_favored.json'].get(home_team, 0),\n",
-    "            features_dict['away_wr_favored.json'].get(away_team, 0),\n",
-    "            features_dict['home_wr_underdog.json'].get(home_team, 0),\n",
-    "            features_dict['away_wr_underdog.json'].get(away_team, 0),\n",
-    "            features_dict['home_team_upset.json'].get(home_team, 0),\n",
-    "            features_dict['away_team_upset.json'].get(away_team, 0),\n",
-    "            home_team_elo, away_team_elo, elo_diff, elo_discrepancy, home_odds_elo_mismatch, away_odds_elo_mismatch]\n",
-    "\n",
-    "        # Scale these features\n",
-    "        scaler = StandardScaler()\n",
-    "        scaler.mean_ = np.array(loaded_params['means'][3:])\n",
-    "        scaler.scale_ = np.array(loaded_params['stds'][3:])\n",
-    "        unscaled_features = np.array(unscaled_features).reshape(1, -1)\n",
-    "        scaled_features = scaler.transform(unscaled_features)[0]\n",
-    "\n",
-    "        # Combine all features\n",
-    "        complete_features = [scaled_avg_home_odds, scaled_avg_away_odds, scaled_avg_odds_ratio] + list(scaled_features)\n",
-    "        return complete_features\n",
-    "\n",
-    "    except Exception as e:\n",
-    "        raise RuntimeError(f\"Error in scale_features: {e}\")\n",
-    "\n",
-    "# Load function to convert inputs into model\n",
-    "def prepare_inputs(home_team, away_team, home_odds, away_odds):\n",
-    "    # Get team IDs and sport ID\n",
-    "    home_team_id = teams_df.loc[teams_df['team_name'] == home_team, 'team_id'].iloc[0]\n",
-    "    away_team_id = teams_df.loc[teams_df['team_name'] == away_team, 'team_id'].iloc[0]\n",
-    "    sport_id = teams_df.loc[teams_df['team_name'] == home_team, 'sport_id'].iloc[0]\n",
-    "\n",
-    "    complete_features = scale_features(\n",
-    "        features_dict=features_dict,\n",
-    "        home_team=home_team,\n",
-    "        away_team=away_team,\n",
-    "        home_odds=home_odds,\n",
-    "        away_odds=away_odds,\n",
-    "        loaded_params=loaded_params,\n",
-    "        game_features=None,  \n",
-    "        sport_id=sport_id)\n",
-    "\n",
-    "    inputs = {\n",
-    "        'home_team': torch.tensor([home_team_id], dtype=torch.long),\n",
-    "        'away_team': torch.tensor([away_team_id], dtype=torch.long),\n",
-    "        'game_features': torch.tensor([complete_features], dtype=torch.float32),\n",
-    "        'sport_id': torch.tensor([sport_id], dtype=torch.long)}\n",
-    "    \n",
-    "    return inputs\n",
-    "\n",
-    "# Load function to update output\n",
-    "def update_output(n_clicks, home_team, away_team, home_odds, away_odds):\n",
-    "    if n_clicks is None or n_clicks == 0:\n",
-    "        return \"\"  # No output initially\n",
-    "    \n",
-    "    if n_clicks > 0:\n",
-    "        # Validate odds\n",
-    "        odds_ratio = adjusted_odds_ratio(home_odds, away_odds)\n",
-    "        if odds_ratio is None:\n",
-    "            return \"Invalid odds entered. Please enter valid odds.\"\n",
-    "\n",
-    "        decimal_home_odds = (home_odds / 100 + 1) if home_odds > 0 else (100 / abs(home_odds) + 1)\n",
-    "        decimal_away_odds = (away_odds / 100 + 1) if away_odds > 0 else (100 / abs(away_odds) + 1)\n",
-    "        \n",
-    "        # Prepare input features for prediction\n",
-    "        inputs = prepare_inputs(home_team, away_team, home_odds, away_odds)\n",
-    "        home_probs = []\n",
-    "\n",
-    "        # Collect predictions from each model in the ensemble\n",
-    "        for model in ensemble_models:\n",
-    "            with torch.no_grad():  # Ensure no gradients are computed\n",
-    "                home_prob = model(\n",
-    "                    inputs['home_team'],\n",
-    "                    inputs['away_team'],\n",
-    "                    inputs['game_features'],\n",
-    "                    inputs['sport_id'])\n",
-    "                home_probs.append(home_prob.item())\n",
-    "        \n",
-    "        # Compute average home win probability\n",
-    "        avg_home_prob = sum(home_probs) / len(home_probs)\n",
-    "        avg_away_prob = 1 - avg_home_prob\n",
-    "\n",
-    "        # Calculate the model value bets to identify value bets\n",
-    "        model_home_value = (avg_home_prob * decimal_home_odds) - 1\n",
-    "        model_away_value = (avg_away_prob * decimal_away_odds) - 1\n",
-    "        home_vb = model_home_value > 0.05\n",
-    "        away_vb = model_away_value > 0.05\n",
-    "        ev_home = 10 * ((avg_home_prob * (decimal_home_odds - 1)) - (1 - avg_home_prob))\n",
-    "        ev_away = 10 * ((avg_away_prob * (decimal_away_odds - 1)) - (1 - avg_away_prob))\n",
-    "\n",
-    "        # Construct output message\n",
-    "        output = f\"Predicted Home Win Probability: {avg_home_prob:.4f}, Predicted Away Win Probability: {avg_away_prob:.4f}\"\n",
-    "\n",
-    "        if home_vb:\n",
-    "            output += f\"\\n\\nHome Moneyline Bet is a value bet\\n\\nEV for a $10 wager: ${ev_home:.2f}\"\n",
-    "        else:\n",
-    "            output += \"\\n\\nHome Moneyline Bet is NOT a value bet\"\n",
-    "\n",
-    "        if away_vb:\n",
-    "            output += f\"\\n\\nAway Moneyline Bet is a value bet\\n\\nEV for a $10 wager: ${ev_away:.2f}\"\n",
-    "        else:\n",
-    "            output += \"\\n\\nAway Moneyline Bet is NOT a value bet\"\n",
-    "\n",
-    "        return output\n",
-    "\n",
-    " # Load Ensemble Models\n",
-    "def load_models(model_dir, model_count, hyperparams):\n",
-    "    models = []\n",
-    "    for i in range(model_count):\n",
-    "        model_path = os.path.join(model_dir, f\"model_{i}.pt\")\n",
-    "        model = NCFBinary2(\n",
-    "            num_teams=hyperparams['num_teams'],\n",
-    "            num_features=hyperparams['num_features'],\n",
-    "            num_sports=hyperparams['num_sports'],\n",
-    "            embedding_dim=hyperparams['embedding_dim'],\n",
-    "            dropout_rate=hyperparams['dropout_rate'])\n",
-    "        model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu'), weights_only=True))\n",
-    "        model.eval() \n",
-    "        models.append(model)\n",
-    "\n",
-    "    return models\n",
-    "\n",
-    "# Load team names from CSV\n",
-    "teams_df = pd.read_csv('team_names_with_sports_and_ids.csv')\n",
-    "\n",
-    "# Load ELO Ratings - Jan 6 2025\n",
-    "nba_elo_ratings = {\n",
-    "    \"Oklahoma City Thunder\": 1727.67,\n",
-    "    \"Cleveland Cavaliers\": 1689.42,\n",
-    "    \"Boston Celtics\": 1683.85,\n",
-    "    \"New York Knicks\": 1632.22,\n",
-    "    \"Denver Nuggets\": 1592.67,\n",
-    "    \"Dallas Mavericks\": 1585.23,\n",
-    "    \"Houston Rockets\": 1578.68,\n",
-    "    \"Los Angeles Clippers\": 1545.26,\n",
-    "    \"Minnesota Timberwolves\": 1554.03,\n",
-    "    \"Indiana Pacers\": 1551.24,\n",
-    "    \"Memphis Grizzlies\": 1561.02,\n",
-    "    \"Los Angeles Lakers\": 1525.59,\n",
-    "    \"Orlando Magic\": 1514.48,\n",
-    "    \"Milwaukee Bucks\": 1524.36,\n",
-    "    \"Golden State Warriors\": 1506.90,\n",
-    "    \"Sacramento Kings\": 1524.15,\n",
-    "    \"Miami Heat\": 1482.19,\n",
-    "    \"Philadelphia 76ers\": 1486.01,\n",
-    "    \"Atlanta Hawks\": 1480.56,\n",
-    "    \"Phoenix Suns\": 1474.09,\n",
-    "    \"San Antonio Spurs\": 1465.75,\n",
-    "    \"Chicago Bulls\": 1447.29,\n",
-    "    \"Detroit Pistons\": 1447.10,\n",
-    "    \"Utah Jazz\": 1439.04,\n",
-    "    \"Brooklyn Nets\": 1368.24,\n",
-    "    \"Portland Trail Blazers\": 1331.90,\n",
-    "    \"New Orleans Pelicans\": 1344.04,\n",
-    "    \"Toronto Raptors\": 1323.88,\n",
-    "    \"Charlotte Hornets\": 1291.98,\n",
-    "    \"Washington Wizards\": 1247.57}\n",
-    "\n",
-    "nfl_elo_ratings = {\n",
-    "    \"Kansas City Chiefs\": 1663.60,\n",
-    "    \"Detroit Lions\": 1633.90,\n",
-    "    \"Buffalo Bills\": 1642.03,\n",
-    "    \"Baltimore Raves\": 1636.80,\n",
-    "    \"Philadelphia Eagles\": 1628.26,\n",
-    "    \"Minnesota Vikings\": 1571.93,\n",
-    "    \"Green Bay Packers\": 1578.91,\n",
-    "    \"Cincinnati Bengals\": 1551.59,\n",
-    "    \"Tampa Bay Buccaneers\": 1549.08,\n",
-    "    \"Pittsburgh Steelers\": 1535.29,\n",
-    "    \"Los Angeles Rams\": 1524.62,\n",
-    "    \"Los Angeles Chargers\": 1534.40,\n",
-    "    \"Denver Broncos\": 1528.54,\n",
-    "    \"Seattle Seahawks\": 1515.43,\n",
-    "    \"San Francisco 49ers\": 1533.09,\n",
-    "    \"Washington Commanders\": 1491.04,\n",
-    "    \"Miami Dolphins\": 1511.25,\n",
-    "    \"Houston Texans\": 1496.34,\n",
-    "    \"Dallas Cowboys\": 1495.64,\n",
-    "    \"Indianapolis Colts\": 1453.56,\n",
-    "    \"Atlanta Falcons\": 1441.19,\n",
-    "    \"Arizona Cardinals\": 1438.39,\n",
-    "    \"New Orleans Saints\": 1447.17,\n",
-    "    \"New York Jets\": 1428.28,\n",
-    "    \"Cleveland Brows\": 1408.85,\n",
-    "    \"Jacksonville Jaguars\": 1420.75,\n",
-    "    \"Las Vegas Raiders\": 1409.40,\n",
-    "    \"Chicago Bears\": 1411.22,\n",
-    "    \"New England Patriots\": 1398.20,\n",
-    "    \"Tennessee Titans\": 1384.54,\n",
-    "    \"New York Giants\": 1377.40,\n",
-    "    \"Carolina Panthers\": 1359.33}\n",
-    "\n",
-    "epl_elo_ratings = {\n",
-    "    \"Liverpool\": 1707.96,\n",
-    "    \"Arsenal\": 1693.95,\n",
-    "    \"Manchester City\": 1646.77,\n",
-    "    \"Newcastle\": 1583.88,\n",
-    "    \"Chelsea\": 1581.35,\n",
-    "    \"Aston Villa\": 1524.47,\n",
-    "    \"Nottingham\": 1525.99,\n",
-    "    \"Bournemouth\": 1528.34,\n",
-    "    \"Tottenham\": 1514.64,\n",
-    "    \"Fulham\": 1501.51,\n",
-    "    \"Brighton\": 1488.99,\n",
-    "    \"Manchester Utd\": 1469.88,\n",
-    "    \"Crystal Palace\": 1474.63,\n",
-    "    \"Brentford\": 1466.56,\n",
-    "    \"West Ham\": 1440.42,\n",
-    "    \"Everton\": 1430.22,\n",
-    "    \"Wolves\": 1414.84,\n",
-    "    \"Ipswich\": 1377.64,\n",
-    "    \"Leicester\": 1339.31,\n",
-    "    \"Southampton\": 1288.65}\n",
-    "\n",
-    "# Setup the Dropdown in Dash\n",
-    "dropdown = dcc.Dropdown(options=[{'label': team, 'value': team} for team in teams_df['team_name']], searchable=True, placeholder=\"Select a team\", id='team-dropdown')\n",
-    "# Load team names\n",
-    "teams = [{'label': team, 'value': team} for team in teams_df['team_name'].unique()]\n",
-    "\n",
-    "# Define game features in the exact order used during training\n",
-    "game_features = [\n",
-    "    'avg_home_odds', 'avg_away_odds', 'avg_odds_ratio', 'hteam_w_streak', 'ateam_w_streak', 'hteam_l_streak', 'ateam_l_streak', \n",
-    "    'home_team_elo', 'away_team_elo', 'home_wr_favored', 'away_wr_favored', 'home_wr_underdog', 'away_wr_underdog',\n",
-    "    'home_team_upset', 'away_team_upset', 'elo_diff', 'elo_discrepancy', 'home_odds_elo_mismatch', 'away_odds_elo_mismatch']\n",
-    "\n",
-    "# Initialize your Dash app using the standard Dash class\n",
-    "app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": None,
-   "id": "49ed08f7-1e7d-43d3-ba2f-d1ea8ef8be28",
-   "metadata": {
-    "jupyter": {
-     "source_hidden": True
-    }
-   },
-   "outputs": [],
-   "source": [
-    "def scale_features(features_dict, home_team, away_team, home_odds, away_odds, loaded_params, game_features, sport_id):\n",
-    "    try:\n",
-    "        # Elo ratings dictionaries\n",
-    "        elo_ratings = {\n",
-    "            1: nba_elo_ratings,\n",
-    "            0: nfl_elo_ratings,\n",
-    "            2: epl_elo_ratings}\n",
-    "\n",
-    "        # Scale home and away odds\n",
-    "        mean_avg_home_odds = loaded_params['means'][0]\n",
-    "        std_avg_home_odds = loaded_params['stds'][0]\n",
-    "        scaled_avg_home_odds = (home_odds - mean_avg_home_odds) / std_avg_home_odds\n",
-    "\n",
-    "        mean_avg_away_odds = loaded_params['means'][1]\n",
-    "        std_avg_away_odds = loaded_params['stds'][1]\n",
-    "        scaled_avg_away_odds = (away_odds - mean_avg_away_odds) / std_avg_away_odds\n",
-    "\n",
-    "        # Compute odds_ratio and scale it\n",
-    "        odds_ratio = adjusted_odds_ratio(home_odds, away_odds)\n",
-    "        mean_avg_odds_ratio = loaded_params['means'][2]\n",
-    "        std_avg_odds_ratio = loaded_params['stds'][2]\n",
-    "        scaled_avg_odds_ratio = (odds_ratio - mean_avg_odds_ratio) / std_avg_odds_ratio\n",
-    "\n",
-    "        # Initialize streaks to defaults\n",
-    "        hteam_w_streak, hteam_l_streak, ateam_w_streak, ateam_l_streak = 0, 0, 0, 0\n",
-    "\n",
-    "        # Fetch sport-specific streaks\n",
-    "        if sport_id == 2:  # EPL\n",
-    "            home_team = get_canonical_team_name(home_team, teamname_replacements)\n",
-    "            away_team = get_canonical_team_name(away_team, teamname_replacements)\n",
-    "            print(\"Canonical Home Team:\", home_team)\n",
-    "            print(\"Canonical Away Team:\", away_team)\n",
-    "            home_streaks, _ = epl_analyze_team_streaks(home_team)\n",
-    "            away_streaks, _ = epl_analyze_team_streaks(away_team)\n",
-    "            print(\"Home Streaks:\", home_streaks)\n",
-    "            print(\"Away Streaks:\", away_streaks)\n",
-    "            print(\"Keys in Home Streaks:\", home_streaks.keys())\n",
-    "            print(\"Keys in Away Streaks:\", away_streaks.keys())\n",
-    "            hteam_w_streak = int(home_streaks['win_streak_3'])\n",
-    "            hteam_l_streak = int(home_streaks['loss_streak_3'])\n",
-    "            ateam_w_streak = int(away_streaks['win_streak_3'])\n",
-    "            ateam_l_streak = int(away_streaks['loss_streak_3'])\n",
-    "        elif sport_id == 1:  # NBA\n",
-    "            nba_home_stats = get_nba_team_recent_stats(home_team)\n",
-    "            nba_away_stats = get_nba_team_recent_stats(away_team)\n",
-    "            hteam_w_streak = int(nba_home_stats['NBA_WIN_STREAK_3'].iloc[-1])\n",
-    "            hteam_l_streak = int(nba_home_stats['NBA_LOSS_STREAK_3'].iloc[-1])\n",
-    "            ateam_w_streak = int(nba_away_stats['NBA_WIN_STREAK_3'].iloc[-1])\n",
-    "            ateam_l_streak = int(nba_away_stats['NBA_LOSS_STREAK_3'].iloc[-1])\n",
-    "        elif sport_id == 0:  # NFL\n",
-    "            home_streaks, away_streaks = nfl_analyze_team_streaks(home_team), nfl_analyze_team_streaks(away_team)\n",
-    "            hteam_w_streak = int(home_streaks['win_streak_3'])\n",
-    "            hteam_l_streak = int(home_streaks['loss_streak_3'])\n",
-    "            ateam_w_streak = int(away_streaks['win_streak_3'])\n",
-    "            ateam_l_streak = int(away_streaks['loss_streak_3'])\n",
-    "\n",
-    "        # Fetch Elo ratings, default to 1500 if not found\n",
-    "        home_team_elo = elo_ratings.get(sport_id, {}).get(home_team, 1500)\n",
-    "        away_team_elo = elo_ratings.get(sport_id, {}).get(away_team, 1500)\n",
-    "        elo_diff = home_team_elo - away_team_elo\n",
-    "        elo_discrepancy = int(pd.cut([elo_diff], bins=[-float('inf'), -50, 50, float('inf')], labels=[-1, 0, 1])[0])\n",
-    "\n",
-    "        home_favored_by_odds = int(home_odds < away_odds)\n",
-    "        home_favored_by_elo = int(home_team_elo > away_team_elo)\n",
-    "        away_favored_by_odds = int(home_odds > away_odds)\n",
-    "        away_favored_by_elo = int(away_team_elo > home_team_elo)\n",
-    "        home_odds_elo_mismatch = int(home_favored_by_odds != home_favored_by_elo)\n",
-    "        away_odds_elo_mismatch = int(away_favored_by_odds != away_favored_by_elo)\n",
-    "\n",
-    "        home_wr_favored = features_dict.get('home_wr_favored.json', {}).get(home_team, 0)\n",
-    "        away_wr_favored = features_dict.get('away_wr_favored.json', {}).get(away_team, 0)\n",
-    "        home_wr_underdog = features_dict.get('home_wr_underdog.json', {}).get(home_team, 0)\n",
-    "        away_wr_underdog = features_dict.get('away_wr_underdog.json', {}).get(away_team, 0)\n",
-    "        home_team_upset = features_dict.get('home_team_upset.json', {}).get(home_team, 0)\n",
-    "        away_team_upset = features_dict.get('away_team_upset.json', {}).get(away_team, 0)\n",
-    "\n",
-    "        # Extract unscaled features\n",
-    "        unscaled_features = [\n",
-    "            hteam_w_streak, hteam_l_streak, ateam_w_streak, ateam_l_streak,\n",
-    "            home_wr_favored,\n",
-    "            away_wr_favored,\n",
-    "            home_wr_underdog,\n",
-    "            away_wr_underdog,\n",
-    "            home_team_upset,\n",
-    "            away_team_upset,\n",
-    "            home_team_elo, away_team_elo, elo_diff, elo_discrepancy, home_odds_elo_mismatch, away_odds_elo_mismatch]\n",
-    "\n",
-    "        # Scale these features\n",
-    "        scaler = StandardScaler()\n",
-    "        scaler.mean_ = np.array(loaded_params['means'][3:])\n",
-    "        scaler.scale_ = np.array(loaded_params['stds'][3:])\n",
-    "        unscaled_features = np.array(unscaled_features).reshape(1, -1)\n",
-    "        scaled_features = scaler.transform(unscaled_features)[0]\n",
-    "\n",
-    "        # Combine all features\n",
-    "        complete_features = [scaled_avg_home_odds, scaled_avg_away_odds, scaled_avg_odds_ratio] + list(scaled_features)\n",
-    "        return complete_features\n",
-    "\n",
-    "    except Exception as e:\n",
-    "        raise RuntimeError(f\"Error in scale_features: {e}\")\n",
-    "\n",
-    "features_dict = {\n",
-    "    'home_wr_favored': {'Tottenham': 0.6, 'Liverpool': 0.4},\n",
-    "    'away_wr_favored': {'Tottenham': 0.4, 'Liverpool': 0.6},\n",
-    "    'home_wr_underdog': {'Tottenham': 0.5, 'Liverpool': 0.3},\n",
-    "    'away_wr_underdog': {'Tottenham': 0.3, 'Liverpool': 0.5},\n",
-    "    'home_team_upset': {'Tottenham': 0.1, 'Liverpool': 0.2},\n",
-    "    'away_team_upset': {'Tottenham': 0.2, 'Liverpool': 0.1}}\n",
-    "loaded_params = {\n",
-    "    'means': [1.5, 1.5, 1.0] + [0.5] * 10,\n",
-    "    'stds': [0.5, 0.5, 0.1] + [0.1] * 10}\n",
-    "nba_elo_ratings = {'Tottenham': 1600, 'Liverpool': 1500}\n",
-    "nfl_elo_ratings = {'Tottenham': 1500, 'Liverpool': 1600}\n",
-    "epl_elo_ratings = {'Tottenham': 1500, 'Liverpool': 1600}\n",
-    "\n",
-    "home_team = 'Tottenham'\n",
-    "away_team = 'Liverpool'\n",
-    "home_odds = 370\n",
-    "away_odds = -165\n",
-    "sport_id = 2\n",
-    "\n",
-    "# Load Scaler\n",
-    "with open('scaler_params.json', 'r') as f:\n",
-    "    loaded_params = json.load(f)\n",
-    "    scaler = StandardScaler()\n",
-    "    scaler.mean_ = np.array(loaded_params['means'])\n",
-    "    scaler.scale_ = np.array(loaded_params['stds'])\n",
-    "\n",
-    "# Run the function\n",
-    "try:\n",
-    "    complete_features = scale_features(\n",
-    "        features_dict,\n",
-    "        home_team,\n",
-    "        away_team,\n",
-    "        home_odds,\n",
-    "        away_odds,\n",
-    "        loaded_params,\n",
-    "        game_features=None,\n",
-    "        sport_id=sport_id)\n",
-    "    print(\"Features scaled successfully:\", complete_features)\n",
-    "except Exception as e:\n",
-    "    print(\"Error during scaling:\", e)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 3,
-   "id": "a82fc1a4-95ad-40cc-8142-87a8186744c7",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "app.layout = html.Div([\n",
-    "    dbc.Container([\n",
-    "        html.H1(\"ML Model to Identify Value Bets\", style={'textAlign': 'center'}),\n",
-    "        html.P(\"You can use my trained model to identify profitable moneyline bets. Simply enter the home and away teams and input the odds. The model will then provide predictions for the home and away team win probabilities based on the information entered, as well as calculate the expected value of placing a $10 wager on either team.\",\n",
-    "               style={'textAlign': 'left'}),\n",
-    "        dbc.Row([\n",
-    "            dbc.Col([\n",
-    "                html.Div(\"Home Team:\", style={'textAlign': 'center'}),\n",
-    "                dcc.Dropdown(\n",
-    "                    id='input-home-team',\n",
-    "                    options=teams,\n",
-    "                    searchable=True,\n",
-    "                    placeholder=\"Select Home Team\"\n",
-    "                ),\n",
-    "                html.Br(),\n",
-    "                html.Div(\"Home Odds:\", style={'textAlign': 'center'}),\n",
-    "                dcc.Input(\n",
-    "                    id='input-home-odds', type='number', placeholder='(American Odds format)', step=0.01, debounce=True, style={'width': '100%'}\n",
-    "                )\n",
-    "            ], width=6),\n",
-    "            dbc.Col([\n",
-    "                html.Div(\"Away Team:\", style={'textAlign': 'center'}),\n",
-    "                dcc.Dropdown(\n",
-    "                    id='input-away-team',\n",
-    "                    options=teams,\n",
-    "                    searchable=True,\n",
-    "                    placeholder=\"Select Away Team\"\n",
-    "                ),\n",
-    "                html.Br(),\n",
-    "                html.Div(\"Away Odds:\", style={'textAlign': 'center'}),\n",
-    "                dcc.Input(\n",
-    "                    id='input-away-odds', type='number', placeholder='(American Odds format)', step=0.01, debounce=True, style={'width': '100%'}\n",
-    "                )\n",
-    "            ], width=6),\n",
-    "        ]),\n",
-    "        html.Hr(),  \n",
-    "        dbc.Row([\n",
-    "            dbc.Col(html.Button('Submit', id='submit-button', n_clicks=0), width={\"size\": 2, \"offset\": 5}, className=\"d-flex justify-content-center\")\n",
-    "        ]),\n",
-    "        html.Br(),  \n",
-    "        dbc.Row([\n",
-    "            dbc.Col(dcc.Markdown(id='output-col-1', style={'display': 'none', 'border': '1px solid #ddd', 'padding': '10px'}), width=6),\n",
-    "            dbc.Col(dcc.Markdown(id='output-col-2', style={'display': 'none', 'border': '1px solid #ddd', 'padding': '10px'}), width=6),\n",
-    "        ])\n",
-    "    ])\n",
-    "])"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 4,
-   "id": "d3abf2bf-e83d-4dc2-a249-fb90ad33ff4e",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "@app.callback(\n",
-    "    [Output('output-col-1', 'children'),\n",
-    "     Output('output-col-2', 'children'),\n",
-    "     Output('output-col-1', 'style'),\n",
-    "     Output('output-col-2', 'style'),\n",
-    "     Output('submit-button', 'n_clicks')],\n",
-    "    [Input('submit-button', 'n_clicks')],\n",
-    "    [State('input-home-team', 'value'),\n",
-    "     State('input-away-team', 'value'),\n",
-    "     State('input-home-odds', 'value'),\n",
-    "     State('input-away-odds', 'value')])\n",
-    "\n",
-    "def update_output_callback(n_clicks, home_team, away_team, home_odds, away_odds):\n",
-    "    if n_clicks is None or n_clicks == 0:\n",
-    "        return \"\", \"\", {'display': 'none'}, {'display': 'none'}, n_clicks  \n",
-    "\n",
-    "    # Error check: Ensure all fields are filled\n",
-    "    if not all([home_team, away_team, home_odds, away_odds]):\n",
-    "        return \"Please fill in all fields.\", \"\", {'display': 'block'}, {'display': 'none'}, n_clicks\n",
-    "\n",
-    "    # Error check: Ensure the teams are not the same\n",
-    "    if home_team == away_team:\n",
-    "        return \"The same team cannot be home and away. Try again.\", \"\", {'display': 'block'}, {'display': 'none'}, n_clicks\n",
-    "\n",
-    "    # Error check: Ensure the teams belong to the same sport\n",
-    "    home_sport = teams_df.loc[teams_df['team_name'] == home_team, 'sport'].iloc[0]\n",
-    "    away_sport = teams_df.loc[teams_df['team_name'] == away_team, 'sport'].iloc[0]\n",
-    "    if home_sport != away_sport:\n",
-    "        return \"The two teams are not in the same sport.\", \"\", {'display': 'block'}, {'display': 'none'}, n_clicks\n",
-    "\n",
-    "    # Error check: Validate odds range\n",
-    "    if -100 < home_odds < 100 or -100 < away_odds < 100:\n",
-    "        return \"Odds cannot be within the range -100 to 100. Please enter valid odds.\", \"\", {'display': 'block'}, {'display': 'none'}, n_clicks\n",
-    "\n",
-    "    try:\n",
-    "        # Validate and prepare odds\n",
-    "        odds_ratio = adjusted_odds_ratio(home_odds, away_odds)\n",
-    "        if odds_ratio is None:\n",
-    "            return \"Invalid odds entered.\", \"\", {'display': 'block'}, {'display': 'none'}, n_clicks\n",
-    "\n",
-    "        decimal_home_odds = (home_odds / 100 + 1) if home_odds > 0 else (100 / abs(home_odds) + 1)\n",
-    "        decimal_away_odds = (away_odds / 100 + 1) if away_odds > 0 else (100 / abs(away_odds) + 1)\n",
-    "\n",
-    "        # Prepare model inputs\n",
-    "        inputs = prepare_inputs(home_team, away_team, home_odds, away_odds)\n",
-    "        home_probs = []\n",
-    "\n",
-    "        # Collect predictions from each model\n",
-    "        for model in ensemble_models:\n",
-    "            with torch.no_grad():\n",
-    "                home_prob = model(\n",
-    "                    inputs['home_team'],\n",
-    "                    inputs['away_team'],\n",
-    "                    inputs['game_features'],\n",
-    "                    inputs['sport_id'])\n",
-    "                home_probs.append(home_prob.item())\n",
-    "\n",
-    "        # Compute the average probabilities\n",
-    "        avg_home_prob = sum(home_probs) / len(home_probs)\n",
-    "        avg_away_prob = 1 - avg_home_prob\n",
-    "\n",
-    "        # Calculate value bets and EVs\n",
-    "        model_home_value = (avg_home_prob * decimal_home_odds) - 1\n",
-    "        model_away_value = (avg_away_prob * decimal_away_odds) - 1\n",
-    "        home_vb = model_home_value > 0.05\n",
-    "        away_vb = model_away_value > 0.05\n",
-    "        ev_home = 10 * ((avg_home_prob * (decimal_home_odds - 1)) - (1 - avg_home_prob))\n",
-    "        ev_away = 10 * ((avg_away_prob * (decimal_away_odds - 1)) - (1 - avg_away_prob))\n",
-    "\n",
-    "    except Exception as e:\n",
-    "        return f\"Error during prediction: {str(e)}\", \"\", {'display': 'block'}, {'display': 'none'}, n_clicks\n",
-    "\n",
-    "    # Construct output content\n",
-    "    col1_content = f\"Predicted Home Win Probability: {avg_home_prob:.2%}\"\n",
-    "    col2_content = f\"Predicted Away Win Probability: {avg_away_prob:.2%}\"\n",
-    "\n",
-    "    if home_vb:\n",
-    "        col1_content += f\"\\n\\nHome Moneyline Bet is a value bet\\n\\nEV for a $10 wager: ${ev_home:.2f}\"\n",
-    "    else:\n",
-    "        col1_content += \"\\n\\nHome Moneyline Bet is NOT a value bet\"\n",
-    "\n",
-    "    if away_vb:\n",
-    "        col2_content += f\"\\n\\nAway Moneyline Bet is a value bet\\n\\nEV for a $10 wager: ${ev_away:.2f}\"\n",
-    "    else:\n",
-    "        col2_content += \"\\n\\nAway Moneyline Bet is NOT a value bet\"\n",
-    "\n",
-    "    visible_style = {'display': 'block'}\n",
-    "    return col1_content, col2_content, visible_style, visible_style, 0"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 5,
-   "id": "f4c51c50-7e77-4816-bd7b-21c9d95677a6",
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/html": [
-       "\n",
-       "        <iframe\n",
-       "            width=\"100%\"\n",
-       "            height=\"650\"\n",
-       "            src=\"http://127.0.0.1:8050/\"\n",
-       "            frameborder=\"0\"\n",
-       "            allowfullscreen\n",
-       "            \n",
-       "        ></iframe>\n",
-       "        "
-      ],
-      "text/plain": [
-       "<IPython.lib.display.IFrame at 0x16b2b1d60>"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "if __name__ == '__main__':\n",
-    "    # Load hyperparameters\n",
-    "    with open('model_hyperparameters.json', 'r') as f:\n",
-    "        hyperparams = json.load(f)\n",
-    "\n",
-    "    # Load features\n",
-    "    features_json = [\n",
-    "    'home_wr_favored.json',\n",
-    "    'away_wr_favored.json',\n",
-    "    'home_wr_underdog.json',\n",
-    "    'away_wr_underdog.json',\n",
-    "    'home_team_upset.json',\n",
-    "    'away_team_upset.json']\n",
-    "\n",
-    "    # Dictionary to store loaded data\n",
-    "    features_dict = {}\n",
-    "    \n",
-    "    # Iterate over the files and load their contents\n",
-    "    for features in features_json:\n",
-    "        with open(features, 'r') as f:\n",
-    "            features_dict[features] = json.load(f)\n",
-    "\n",
-    "    # Load Scaler\n",
-    "    with open('scaler_params.json', 'r') as f:\n",
-    "        loaded_params = json.load(f)\n",
-    "        scaler = StandardScaler()\n",
-    "        scaler.mean_ = np.array(loaded_params['means'])\n",
-    "        scaler.scale_ = np.array(loaded_params['stds'])\n",
-    "    \n",
-    "    # Run models\n",
-    "    ensemble_models = load_models('ensemble_modelsNCFBinary2', 10, hyperparams)\n",
-    "\n",
-    "    # Start server\n",
-    "    app.run_server(debug=True)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": None,
-   "id": "08379cb1-c965-4162-b59a-97708d29547c",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python (Anaconda3)",
-   "language": "python",
-   "name": "anaconda3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.12.4"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+from dash import Dash, html, dcc, Input, Output, State, callback
+import dash_bootstrap_components as dbc
+import torch
+import torch.nn as nn
+import os
+import pandas as pd
+import json
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+from nba_api.stats.endpoints import teamgamelog
+from nba_api.stats.static import teams
+import time
+from datetime import datetime
+import requests
+import soccerdata as sd
+from pathlib import Path
+
+# Define the team name replacements
+teamname_replacements = {
+    "Liverpool": ["Liverpool"],
+    "Arsenal": ["Arsenal"],
+    "Manchester City": ["Manchester City"],
+    "Newcastle": ["Newcastle Utd"],
+    "Chelsea": ["Chelsea"],
+    "Aston Villa": ["Aston Villa"],
+    "Nottingham": ["Nott'ham Forest"],
+    "Bournemouth": ["Bournemouth"],
+    "Tottenham": ["Tottenham"],
+    "Fulham": ["Fulham"],
+    "Brighton": ["Brighton"],
+    "Manchester Utd": ["Manchester Utd"],
+    "Crystal Palace": ["Crystal Palace"],
+    "Brentford": ["Brentford"],
+    "West Ham": ["West Ham"],
+    "Everton": ["Everton"],
+    "Wolves": ["Wolves"],
+    "Ipswich": ["Ipswich Town"],
+    "Leicester": ["Leicester City"],
+    "Southampton": ["Southampton"]}
+
+# Function to get canonical team name or variations
+def get_canonical_team_name(input_team_name, replacements):
+    """
+    Find the canonical team name and variations from the teamname_replacements dictionary.
+    """
+    for canonical_name, variations in replacements.items():
+        if input_team_name in variations:
+            return canonical_name
+    raise ValueError(f"Team name '{input_team_name}' not found in teamname_replacements.")
+
+# Load Model
+class NCFBinary2(nn.Module):
+    def __init__(self, num_teams, num_features, embedding_dim=16, dropout_rate=0.2, num_sports=3):
+        super(NCFBinary2, self).__init__()
+        
+        # Team embeddings
+        self.home_team_embed = nn.Embedding(num_teams, embedding_dim)
+        self.away_team_embed = nn.Embedding(num_teams, embedding_dim)
+        
+        # Additional game features
+        self.fc_game_features = nn.Linear(num_features, embedding_dim)
+        
+        # Shared dense layers
+        self.shared_fc = nn.Sequential(
+            nn.Linear(embedding_dim * 3, 128),
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate))
+        
+        # Sport-specific layers
+        self.sport_specific_layers = nn.ModuleDict({
+            f"sport_{i}": nn.Sequential(
+                nn.Linear(128, 64),
+                nn.LayerNorm(64),
+                nn.ReLU(),
+                nn.Dropout(dropout_rate))
+            for i in range(num_sports)})
+        
+        # Output layers for home and away win probabilities
+        self.final_output = nn.Linear(64, 1)
+
+    def forward(self, home_team, away_team, game_features, sport_id):
+        home_embed = self.home_team_embed(home_team)
+        away_embed = self.away_team_embed(away_team)
+        
+        # Process game-specific features
+        game_features_embed = torch.relu(self.fc_game_features(game_features))
+        
+        # Concatenate all inputs
+        x = torch.cat([home_embed, away_embed, game_features_embed], dim=-1)
+        
+        # Pass through shared layers
+        shared_output = self.shared_fc(x)
+        
+        # Initialize tensor to store sport-specific outputs
+        sport_outputs = torch.zeros(shared_output.size(0), 64, device=shared_output.device)
+
+        # Process sport-specific logic
+        for i in range(len(self.sport_specific_layers)):
+            mask = (sport_id == i)
+            if mask.any():
+                sport_specific_layer = self.sport_specific_layers[f"sport_{i}"]
+                sport_outputs[mask] = sport_specific_layer(shared_output[mask])
+        
+        # Apply sigmoid activation to final output
+        home_win_prob = torch.sigmoid(self.final_output(sport_outputs))
+        
+        return home_win_prob
+
+# EPL HELPER FUNCTIONS
+fbref = sd.FBref(leagues="ENG-Premier League", seasons=2024)
+
+# Fetch the full schedule for the league
+epl_schedule = fbref.read_schedule()
+epl_schedule = epl_schedule.reset_index()
+
+# Parse the date column
+epl_schedule["date"] = pd.to_datetime(epl_schedule["date"])
+
+# Function to calculate game result for a specific team
+def calculate_epl_result(row, team_name):
+    """
+    Calculate the result for a given team in a match.
+    """
+    if pd.isna(row["score"]):
+        return None  # Skip games with missing scores
+    if (row["home_team"] == team_name and row["score"][0] > row["score"][-1]):
+        return "W"
+    elif (row["away_team"] == team_name and row["score"][-1] > row["score"][0]):
+        return "W"
+    elif (row["home_team"] == team_name and row["score"][0] < row["score"][-1]):
+        return "L"
+    elif (row["away_team"] == team_name and row["score"][-1] < row["score"][0]):
+        return "L"
+    else:
+        return "D"
+
+# Function to calculate streaks for home/away games
+def calculate_epl_streaks(games):
+    """
+    Calculate win/loss streaks for a team from a subset of games (home or away).
+    """
+    if len(games) < 3:
+        return {"win_streak_3": False, "loss_streak_3": False}
+
+    # Exclude draws
+    epl_streak_games = games[games["result"] != "D"]
+
+    # Sort games by date in descending order and take the last 3 non-draw games
+    epl_streak_games = epl_streak_games.sort_values(by="date", ascending=False).head(3)
+
+    # Determine win/loss
+    epl_streak_games["win"] = epl_streak_games["result"] == "W"
+
+    # Calculate win streak: True if all last 3 games are wins
+    epl_win_streak = epl_streak_games["win"].all()
+
+    # Calculate loss streak: True if all last 3 games are losses
+    epl_loss_streak = (~epl_streak_games["win"]).all()
+
+    return {"win_streak_3": epl_win_streak, "loss_streak_3": epl_loss_streak}
+
+# Analyze streaks for a team
+def epl_analyze_team_streaks(input_team_name):
+    """
+    Analyze home and away streaks for a given team.
+    """
+    team_name = get_canonical_team_name(input_team_name, teamname_replacements)
+    
+    team_epl_games = epl_schedule[
+        (epl_schedule["home_team"] == team_name) | (epl_schedule["away_team"] == team_name)]
+
+    today = pd.Timestamp(datetime.now().date())
+    past_epl_games = team_epl_games[team_epl_games["date"] < today]
+
+    # Apply result calculation
+    past_epl_games = past_epl_games.copy()  # Avoid modifying the original DataFrame
+    past_epl_games["result"] = past_epl_games.apply(lambda row: calculate_epl_result(row, team_name), axis=1)
+    past_epl_games = past_epl_games.dropna(subset=["result"])
+
+    # Separate home and away games
+    home_epl_games = past_epl_games[past_epl_games["home_team"] == team_name]
+    away_epl_games = past_epl_games[past_epl_games["away_team"] == team_name]
+
+    # Calculate streaks for home and away games
+    home_epl_streak_metrics = calculate_epl_streaks(home_epl_games)
+    away_epl_streak_metrics = calculate_epl_streaks(away_epl_games)
+
+    return home_epl_streak_metrics, away_epl_streak_metrics
+
+# NFL HELPER FUNCTIONS
+def fetch_nfl_scoreboard_data(start_date=None, end_date=None):
+    """
+    Fetch NFL scoreboard data for a specific date range or year.
+    """
+    nfl_url = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
+    nfl_params = {"dates": start_date if not end_date else f"{start_date}-{end_date}", "seasontype": 2}
+    nfl_response = requests.get(nfl_url, params=nfl_params)
+
+    if nfl_response.status_code == 200:
+        return nfl_response.json()
+    else:
+        raise ValueError(f"Failed to fetch NFL data. Status code: {nfl_response.status_code}")
+
+def extract_nfl_recent_games(scoreboard_data, team_name, n_games=18):
+    """
+    Extract the most recent NFL games for a specific team.
+    """
+    games = scoreboard_data.get('events', [])
+    nfl_recent_games = []
+
+    for game in games:
+        competition = game.get('competitions', [])[0]
+        competitors = competition.get('competitors', [])
+        
+        # Match the team name robustly
+        for competitor in competitors:
+            if competitor['team']['displayName'].strip().lower() == team_name.strip().lower():
+                # Found a match for the team
+                opponent = next(
+                    comp['team']['displayName']
+                    for comp in competitors if comp['team']['displayName'].strip().lower() != team_name.strip().lower())
+                nfl_team_game = {
+                    "date": pd.to_datetime(game['date']),
+                    "opponent": opponent,
+                    "team": competitor['team']['displayName'],
+                    "team_score": int(competitor.get('score', 0)),
+                    "opponent_score": int(
+                        next(
+                            comp['score'] for comp in competitors
+                            if comp['team']['displayName'].strip().lower() != team_name.strip().lower())),
+                    "win": competitor.get('winner', False),
+                    "home_away": "home" if competitor['homeAway'] == "home" else "away"}
+                nfl_recent_games.append(nfl_team_game)
+                break
+
+    # Sort games by date in descending order (most recent to oldest)
+    nfl_recent_games = sorted(nfl_recent_games, key=lambda x: x['date'], reverse=True)
+
+    # Debugging after sorting
+    print("\nExtracted Games After Sorting:")
+    for game in nfl_recent_games:
+        print(f"Date: {game['date']}, Opponent: {game['opponent']}, Home/Away: {game['home_away']}, Win: {game['win']}")
+        
+    return nfl_recent_games[:n_games]  # Return only the most recent `n_games`
+
+def calculate_nfl_streaks(nfl_games, nfl_home_or_away=None):
+    """
+    Calculate win/loss streaks for a specific team from its recent games.
+    """
+    # Filter games based on home or away criteria if provided
+    if nfl_home_or_away:
+        nfl_games = [game for game in nfl_games if game["home_away"] == nfl_home_or_away]
+
+    # Sort games chronologically (oldest to most recent)
+    nfl_games = sorted(nfl_games, key=lambda x: x['date'])
+
+    # Exclude draws
+    nfl_non_draw_games = [game for game in nfl_games if game["team_score"] != game["opponent_score"]]
+
+    if len(nfl_non_draw_games) < 3:
+        return {"win_streak_3": False, "loss_streak_3": False}
+
+    # Take the most recent 3 non-draw games (chronological order maintained)
+    nfl_streak_games = nfl_non_draw_games[-3:]
+
+    # Determine win/loss
+    nfl_win_streak = all(game["win"] for game in nfl_streak_games)
+    nfl_loss_streak = all(not game["win"] for game in nfl_streak_games)
+
+    return {"win_streak_3": nfl_win_streak, "loss_streak_3": nfl_loss_streak}
+
+def nfl_analyze_team_streaks(nfl_team_name, start_date=None, end_date=None):
+    """
+    Analyze home and away streaks for a given NFL team.
+    """
+    nfl_scoreboard_data = fetch_nfl_scoreboard_data(start_date=20241201, end_date=20250131)
+    nfl_recent_games = extract_nfl_recent_games(nfl_scoreboard_data, nfl_team_name)
+
+    # Separate home and away games
+    nfl_home_games = [game for game in nfl_recent_games if game["home_away"] == "home"]
+    nfl_away_games = [game for game in nfl_recent_games if game["home_away"] == "away"]
+
+    # Exclude draws
+    nfl_home_games_non_draw = [game for game in nfl_home_games if game["team_score"] != game["opponent_score"]]
+    nfl_away_games_non_draw = [game for game in nfl_away_games if game["team_score"] != game["opponent_score"]]
+
+    # Debug: Print the last 3 home and away games (excluding draws)
+    print("\nLast 3 Home Games (Excluding Draws):")
+    for game in nfl_home_games_non_draw[:3]:  # Most recent 3 home games
+        print(f"Date: {game['date']}, Opponent: {game['opponent']}, Score: {game['team_score']}-{game['opponent_score']}, Win: {game['win']}")
+
+    print("\nLast 3 Away Games (Excluding Draws):")
+    for game in nfl_away_games_non_draw[:3]:  # Most recent 3 away games
+        print(f"Date: {game['date']}, Opponent: {game['opponent']}, Score: {game['team_score']}-{game['opponent_score']}, Win: {game['win']}")
+
+    # Calculate streaks for home and away games
+    nfl_home_streak_metrics = calculate_nfl_streaks(nfl_home_games_non_draw)
+    nfl_away_streak_metrics = calculate_nfl_streaks(nfl_away_games_non_draw)
+
+    return nfl_home_streak_metrics, nfl_away_streak_metrics
+
+# NBA HELPER FUNCTIONS
+# Initialize team lookup table
+nba_team_lookup = pd.DataFrame(teams.get_teams())
+
+# Helper Functions
+def get_nba_team_id_by_fullname(fullname):
+    """
+    Get the NBA team ID from the full team name using nba_team_lookup.
+    """
+    # Check for matches in the full_name column
+    matches_full_name = nba_team_lookup[nba_team_lookup['full_name'].str.contains(fullname, case=False, na=False)]
+    if not matches_full_name.empty:
+        return matches_full_name.iloc[0]['id']
+    else:
+        raise ValueError(f"NBA team full name '{fullname}' not found in lookup.")
+
+def fetch_nba_team_recent_games(team_id, n_games=3, season='2024-25'):
+    """
+    Fetch the most recent games for an NBA team using nba_api.
+    """
+    team_games = teamgamelog.TeamGameLog(team_id=team_id, season=season).get_data_frames()[0]
+    
+    # Convert 'GAME_DATE' to datetime format for proper sorting
+    team_games['GAME_DATE'] = pd.to_datetime(team_games['GAME_DATE'], errors='coerce')
+    
+    # Drop rows with invalid dates
+    team_games = team_games.dropna(subset=['GAME_DATE'])
+
+    # Sort by GAME_DATE in descending order and fetch the most recent `n_games`
+    nba_recent_games = team_games.sort_values(by='GAME_DATE', ascending=False).head(n_games)
+    return nba_recent_games
+
+def calculate_nba_streak_metrics(recent_games):
+    """
+    Calculate win/loss streaks for the last 3 NBA games.
+    """
+    # Add a binary win/loss indicator
+    recent_games['NBA_WIN'] = recent_games['WL'].apply(lambda x: 1 if x == 'W' else 0)
+    recent_games['NBA_LOSS'] = recent_games['WL'].apply(lambda x: 1 if x == 'L' else 0)
+
+    # Calculate win streak: True if all last 3 games are wins
+    recent_games['NBA_WIN_STREAK_3'] = (
+        len(recent_games) >= 3 and
+        all(recent_games['WL'].iloc[:3] == 'W'))
+
+    # Calculate loss streak: True if all last 3 games are losses
+    recent_games['NBA_LOSS_STREAK_3'] = (
+        len(recent_games) >= 3 and
+        all(recent_games['WL'].iloc[:3] == 'L'))
+
+    return recent_games
+
+def get_nba_team_recent_stats(fullname, season='2024-25'):
+    """
+    Fetch recent NBA games and calculate metrics for a specific team.
+    """
+    team_id = get_nba_team_id_by_fullname(fullname)
+    nba_recent_games = fetch_nba_team_recent_games(team_id, n_games=3, season=season)
+    nba_recent_games = calculate_nba_streak_metrics(nba_recent_games)
+    return nba_recent_games
+
+# Load function to calculate Avg_odds_ratio
+def adjusted_odds_ratio(home_odds, away_odds):
+    # Ensure inputs are floats and handle cases where odds might be zero or non-numeric
+    try:
+        home_odds = float(home_odds)
+        away_odds = float(away_odds)
+        if home_odds == 0 or away_odds == 0:
+            raise ValueError("Odds cannot be zero.")
+    except ValueError as e:
+        return None  # or return a default value or message indicating the issue
+
+    if (home_odds > 0 and away_odds < 0) or (home_odds < 0 and away_odds > 0):
+        return abs(home_odds) / abs(away_odds)
+    else:
+        return home_odds / away_odds
+
+def scale_features(features_dict, home_team, away_team, home_odds, away_odds, loaded_params, game_features, sport_id):
+    try:
+        # Elo ratings dictionaries
+        elo_ratings = {
+            1: nba_elo_ratings,
+            0: nfl_elo_ratings,
+            2: epl_elo_ratings}
+
+        # Scale home and away odds
+        mean_avg_home_odds = loaded_params['means'][0]
+        std_avg_home_odds = loaded_params['stds'][0]
+        scaled_avg_home_odds = (home_odds - mean_avg_home_odds) / std_avg_home_odds
+
+        mean_avg_away_odds = loaded_params['means'][1]
+        std_avg_away_odds = loaded_params['stds'][1]
+        scaled_avg_away_odds = (away_odds - mean_avg_away_odds) / std_avg_away_odds
+
+        # Compute odds_ratio and scale it
+        odds_ratio = adjusted_odds_ratio(home_odds, away_odds)
+        mean_avg_odds_ratio = loaded_params['means'][2]
+        std_avg_odds_ratio = loaded_params['stds'][2]
+        scaled_avg_odds_ratio = (odds_ratio - mean_avg_odds_ratio) / std_avg_odds_ratio
+
+        # Initialize streaks to defaults
+        hteam_w_streak, hteam_l_streak, ateam_w_streak, ateam_l_streak = 0, 0, 0, 0
+
+        # Fetch sport-specific streaks
+        if sport_id == 2:  # EPL
+            home_team = get_canonical_team_name(home_team, teamname_replacements)
+            away_team = get_canonical_team_name(away_team, teamname_replacements)
+            home_streaks, _ = epl_analyze_team_streaks(home_team)
+            away_streaks, _ = epl_analyze_team_streaks(away_team)
+            hteam_w_streak = int(home_streaks['win_streak_3'])
+            hteam_l_streak = int(home_streaks['loss_streak_3'])
+            ateam_w_streak = int(away_streaks['win_streak_3'])
+            ateam_l_streak = int(away_streaks['loss_streak_3'])
+        elif sport_id == 1:  # NBA
+            nba_home_stats = get_nba_team_recent_stats(home_team)
+            nba_away_stats = get_nba_team_recent_stats(away_team)
+            hteam_w_streak = int(nba_home_stats['NBA_WIN_STREAK_3'].iloc[-1])
+            hteam_l_streak = int(nba_home_stats['NBA_LOSS_STREAK_3'].iloc[-1])
+            ateam_w_streak = int(nba_away_stats['NBA_WIN_STREAK_3'].iloc[-1])
+            ateam_l_streak = int(nba_away_stats['NBA_LOSS_STREAK_3'].iloc[-1])
+        elif sport_id == 0:  # NFL
+            home_streaks, away_streaks = nfl_analyze_team_streaks(home_team), nfl_analyze_team_streaks(away_team)
+            hteam_w_streak = int(home_streaks['win_streak_3'])
+            hteam_l_streak = int(home_streaks['loss_streak_3'])
+            ateam_w_streak = int(away_streaks['win_streak_3'])
+            ateam_l_streak = int(away_streaks['loss_streak_3'])
+
+        # Fetch Elo ratings, default to 1500 if not found
+        home_team_elo = elo_ratings.get(sport_id, {}).get(home_team, 1500)
+        away_team_elo = elo_ratings.get(sport_id, {}).get(away_team, 1500)
+        elo_diff = home_team_elo - away_team_elo
+        elo_discrepancy = int(pd.cut([elo_diff], bins=[-float('inf'), -50, 50, float('inf')], labels=[-1, 0, 1])[0])
+
+        home_favored_by_odds = int(home_odds < away_odds)
+        home_favored_by_elo = int(home_team_elo > away_team_elo)
+        away_favored_by_odds = int(home_odds > away_odds)
+        away_favored_by_elo = int(away_team_elo > home_team_elo)
+        home_odds_elo_mismatch = int(home_favored_by_odds != home_favored_by_elo)
+        away_odds_elo_mismatch = int(away_favored_by_odds != away_favored_by_elo)
+
+        # Extract unscaled features
+        unscaled_features = [
+            hteam_w_streak, hteam_l_streak, ateam_w_streak, ateam_l_streak,
+            features_dict['home_wr_favored.json'].get(home_team, 0),
+            features_dict['away_wr_favored.json'].get(away_team, 0),
+            features_dict['home_wr_underdog.json'].get(home_team, 0),
+            features_dict['away_wr_underdog.json'].get(away_team, 0),
+            features_dict['home_team_upset.json'].get(home_team, 0),
+            features_dict['away_team_upset.json'].get(away_team, 0),
+            home_team_elo, away_team_elo, elo_diff, elo_discrepancy, home_odds_elo_mismatch, away_odds_elo_mismatch]
+
+        # Scale these features
+        scaler = StandardScaler()
+        scaler.mean_ = np.array(loaded_params['means'][3:])
+        scaler.scale_ = np.array(loaded_params['stds'][3:])
+        unscaled_features = np.array(unscaled_features).reshape(1, -1)
+        scaled_features = scaler.transform(unscaled_features)[0]
+
+        # Combine all features
+        complete_features = [scaled_avg_home_odds, scaled_avg_away_odds, scaled_avg_odds_ratio] + list(scaled_features)
+        return complete_features
+
+    except Exception as e:
+        raise RuntimeError(f"Error in scale_features: {e}")
+
+# Load function to convert inputs into model
+def prepare_inputs(home_team, away_team, home_odds, away_odds):
+    # Get team IDs and sport ID
+    home_team_id = teams_df.loc[teams_df['team_name'] == home_team, 'team_id'].iloc[0]
+    away_team_id = teams_df.loc[teams_df['team_name'] == away_team, 'team_id'].iloc[0]
+    sport_id = teams_df.loc[teams_df['team_name'] == home_team, 'sport_id'].iloc[0]
+
+    complete_features = scale_features(
+        features_dict=features_dict,
+        home_team=home_team,
+        away_team=away_team,
+        home_odds=home_odds,
+        away_odds=away_odds,
+        loaded_params=loaded_params,
+        game_features=None,  
+        sport_id=sport_id)
+
+    inputs = {
+        'home_team': torch.tensor([home_team_id], dtype=torch.long),
+        'away_team': torch.tensor([away_team_id], dtype=torch.long),
+        'game_features': torch.tensor([complete_features], dtype=torch.float32),
+        'sport_id': torch.tensor([sport_id], dtype=torch.long)}
+    
+    return inputs
+
+# Load function to update output
+def update_output(n_clicks, home_team, away_team, home_odds, away_odds):
+    if n_clicks is None or n_clicks == 0:
+        return ""  # No output initially
+    
+    if n_clicks > 0:
+        # Validate odds
+        odds_ratio = adjusted_odds_ratio(home_odds, away_odds)
+        if odds_ratio is None:
+            return "Invalid odds entered. Please enter valid odds."
+
+        decimal_home_odds = (home_odds / 100 + 1) if home_odds > 0 else (100 / abs(home_odds) + 1)
+        decimal_away_odds = (away_odds / 100 + 1) if away_odds > 0 else (100 / abs(away_odds) + 1)
+        
+        # Prepare input features for prediction
+        inputs = prepare_inputs(home_team, away_team, home_odds, away_odds)
+        home_probs = []
+
+        # Collect predictions from each model in the ensemble
+        for model in ensemble_models:
+            with torch.no_grad():  # Ensure no gradients are computed
+                home_prob = model(
+                    inputs['home_team'],
+                    inputs['away_team'],
+                    inputs['game_features'],
+                    inputs['sport_id'])
+                home_probs.append(home_prob.item())
+        
+        # Compute average home win probability
+        avg_home_prob = sum(home_probs) / len(home_probs)
+        avg_away_prob = 1 - avg_home_prob
+
+        # Calculate the model value bets to identify value bets
+        model_home_value = (avg_home_prob * decimal_home_odds) - 1
+        model_away_value = (avg_away_prob * decimal_away_odds) - 1
+        home_vb = model_home_value > 0.05
+        away_vb = model_away_value > 0.05
+        ev_home = 10 * ((avg_home_prob * (decimal_home_odds - 1)) - (1 - avg_home_prob))
+        ev_away = 10 * ((avg_away_prob * (decimal_away_odds - 1)) - (1 - avg_away_prob))
+
+        # Construct output message
+        output = f"Predicted Home Win Probability: {avg_home_prob:.4f}, Predicted Away Win Probability: {avg_away_prob:.4f}"
+
+        if home_vb:
+            output += f"\n\nHome Moneyline Bet is a value bet\n\nEV for a $10 wager: ${ev_home:.2f}"
+        else:
+            output += "\n\nHome Moneyline Bet is NOT a value bet"
+
+        if away_vb:
+            output += f"\n\nAway Moneyline Bet is a value bet\n\nEV for a $10 wager: ${ev_away:.2f}"
+        else:
+            output += "\n\nAway Moneyline Bet is NOT a value bet"
+
+        return output
+
+ # Load Ensemble Models
+def load_models(model_dir, model_count, hyperparams):
+    models = []
+    for i in range(model_count):
+        model_path = os.path.join(model_dir, f"model_{i}.pt")
+        model = NCFBinary2(
+            num_teams=hyperparams['num_teams'],
+            num_features=hyperparams['num_features'],
+            num_sports=hyperparams['num_sports'],
+            embedding_dim=hyperparams['embedding_dim'],
+            dropout_rate=hyperparams['dropout_rate'])
+        model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu'), weights_only=True))
+        model.eval() 
+        models.append(model)
+
+    return models
+
+# Load team names from CSV
+teams_df = pd.read_csv('team_names_with_sports_and_ids.csv')
+
+# Load ELO Ratings - Jan 6 2025
+nba_elo_ratings = {
+    "Oklahoma City Thunder": 1727.67,
+    "Cleveland Cavaliers": 1689.42,
+    "Boston Celtics": 1683.85,
+    "New York Knicks": 1632.22,
+    "Denver Nuggets": 1592.67,
+    "Dallas Mavericks": 1585.23,
+    "Houston Rockets": 1578.68,
+    "Los Angeles Clippers": 1545.26,
+    "Minnesota Timberwolves": 1554.03,
+    "Indiana Pacers": 1551.24,
+    "Memphis Grizzlies": 1561.02,
+    "Los Angeles Lakers": 1525.59,
+    "Orlando Magic": 1514.48,
+    "Milwaukee Bucks": 1524.36,
+    "Golden State Warriors": 1506.90,
+    "Sacramento Kings": 1524.15,
+    "Miami Heat": 1482.19,
+    "Philadelphia 76ers": 1486.01,
+    "Atlanta Hawks": 1480.56,
+    "Phoenix Suns": 1474.09,
+    "San Antonio Spurs": 1465.75,
+    "Chicago Bulls": 1447.29,
+    "Detroit Pistons": 1447.10,
+    "Utah Jazz": 1439.04,
+    "Brooklyn Nets": 1368.24,
+    "Portland Trail Blazers": 1331.90,
+    "New Orleans Pelicans": 1344.04,
+    "Toronto Raptors": 1323.88,
+    "Charlotte Hornets": 1291.98,
+    "Washington Wizards": 1247.57}
+
+nfl_elo_ratings = {
+    "Kansas City Chiefs": 1663.60,
+    "Detroit Lions": 1633.90,
+    "Buffalo Bills": 1642.03,
+    "Baltimore Raves": 1636.80,
+    "Philadelphia Eagles": 1628.26,
+    "Minnesota Vikings": 1571.93,
+    "Green Bay Packers": 1578.91,
+    "Cincinnati Bengals": 1551.59,
+    "Tampa Bay Buccaneers": 1549.08,
+    "Pittsburgh Steelers": 1535.29,
+    "Los Angeles Rams": 1524.62,
+    "Los Angeles Chargers": 1534.40,
+    "Denver Broncos": 1528.54,
+    "Seattle Seahawks": 1515.43,
+    "San Francisco 49ers": 1533.09,
+    "Washington Commanders": 1491.04,
+    "Miami Dolphins": 1511.25,
+    "Houston Texans": 1496.34,
+    "Dallas Cowboys": 1495.64,
+    "Indianapolis Colts": 1453.56,
+    "Atlanta Falcons": 1441.19,
+    "Arizona Cardinals": 1438.39,
+    "New Orleans Saints": 1447.17,
+    "New York Jets": 1428.28,
+    "Cleveland Brows": 1408.85,
+    "Jacksonville Jaguars": 1420.75,
+    "Las Vegas Raiders": 1409.40,
+    "Chicago Bears": 1411.22,
+    "New England Patriots": 1398.20,
+    "Tennessee Titans": 1384.54,
+    "New York Giants": 1377.40,
+    "Carolina Panthers": 1359.33}
+
+epl_elo_ratings = {
+    "Liverpool": 1707.96,
+    "Arsenal": 1693.95,
+    "Manchester City": 1646.77,
+    "Newcastle": 1583.88,
+    "Chelsea": 1581.35,
+    "Aston Villa": 1524.47,
+    "Nottingham": 1525.99,
+    "Bournemouth": 1528.34,
+    "Tottenham": 1514.64,
+    "Fulham": 1501.51,
+    "Brighton": 1488.99,
+    "Manchester Utd": 1469.88,
+    "Crystal Palace": 1474.63,
+    "Brentford": 1466.56,
+    "West Ham": 1440.42,
+    "Everton": 1430.22,
+    "Wolves": 1414.84,
+    "Ipswich": 1377.64,
+    "Leicester": 1339.31,
+    "Southampton": 1288.65}
+
+# Setup the Dropdown in Dash
+dropdown = dcc.Dropdown(options=[{'label': team, 'value': team} for team in teams_df['team_name']], searchable=True, placeholder="Select a team", id='team-dropdown')
+# Load team names
+teams = [{'label': team, 'value': team} for team in teams_df['team_name'].unique()]
+
+# Define game features in the exact order used during training
+game_features = [
+    'avg_home_odds', 'avg_away_odds', 'avg_odds_ratio', 'hteam_w_streak', 'ateam_w_streak', 'hteam_l_streak', 'ateam_l_streak', 
+    'home_team_elo', 'away_team_elo', 'home_wr_favored', 'away_wr_favored', 'home_wr_underdog', 'away_wr_underdog',
+    'home_team_upset', 'away_team_upset', 'elo_diff', 'elo_discrepancy', 'home_odds_elo_mismatch', 'away_odds_elo_mismatch']
+
+# Initialize your Dash app using the standard Dash class
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.layout = html.Div([
+    dbc.Container([
+        html.H1("ML Model to Identify Value Bets", style={'textAlign': 'center'}),
+        html.P("You can use my trained model to identify profitable moneyline bets. Simply enter the home and away teams and input the odds. The model will then provide predictions for the home and away team win probabilities based on the information entered, as well as calculate the expected value of placing a $10 wager on either team.",
+               style={'textAlign': 'left'}),
+        dbc.Row([
+            dbc.Col([
+                html.Div("Home Team:", style={'textAlign': 'center'}),
+                dcc.Dropdown(
+                    id='input-home-team',
+                    options=teams,
+                    searchable=True,
+                    placeholder="Select Home Team"
+                ),
+                html.Br(),
+                html.Div("Home Odds:", style={'textAlign': 'center'}),
+                dcc.Input(
+                    id='input-home-odds', type='number', placeholder='(American Odds format)', step=0.01, debounce=True, style={'width': '100%'}
+                )
+            ], width=6),
+            dbc.Col([
+                html.Div("Away Team:", style={'textAlign': 'center'}),
+                dcc.Dropdown(
+                    id='input-away-team',
+                    options=teams,
+                    searchable=True,
+                    placeholder="Select Away Team"
+                ),
+                html.Br(),
+                html.Div("Away Odds:", style={'textAlign': 'center'}),
+                dcc.Input(
+                    id='input-away-odds', type='number', placeholder='(American Odds format)', step=0.01, debounce=True, style={'width': '100%'}
+                )
+            ], width=6),
+        ]),
+        html.Hr(),  
+        dbc.Row([
+            dbc.Col(html.Button('Submit', id='submit-button', n_clicks=0), width={"size": 2, "offset": 5}, className="d-flex justify-content-center")
+        ]),
+        html.Br(),  
+        dbc.Row([
+            dbc.Col(dcc.Markdown(id='output-col-1', style={'display': 'none', 'border': '1px solid #ddd', 'padding': '10px'}), width=6),
+            dbc.Col(dcc.Markdown(id='output-col-2', style={'display': 'none', 'border': '1px solid #ddd', 'padding': '10px'}), width=6),
+        ])
+    ])
+])
+
+@app.callback(
+    [Output('output-col-1', 'children'),
+     Output('output-col-2', 'children'),
+     Output('output-col-1', 'style'),
+     Output('output-col-2', 'style'),
+     Output('submit-button', 'n_clicks')],
+    [Input('submit-button', 'n_clicks')],
+    [State('input-home-team', 'value'),
+     State('input-away-team', 'value'),
+     State('input-home-odds', 'value'),
+     State('input-away-odds', 'value')])
+
+def update_output_callback(n_clicks, home_team, away_team, home_odds, away_odds):
+    if n_clicks is None or n_clicks == 0:
+        return "", "", {'display': 'none'}, {'display': 'none'}, n_clicks  
+
+    # Error check: Ensure all fields are filled
+    if not all([home_team, away_team, home_odds, away_odds]):
+        return "Please fill in all fields.", "", {'display': 'block'}, {'display': 'none'}, n_clicks
+
+    # Error check: Ensure the teams are not the same
+    if home_team == away_team:
+        return "The same team cannot be home and away. Try again.", "", {'display': 'block'}, {'display': 'none'}, n_clicks
+
+    # Error check: Ensure the teams belong to the same sport
+    home_sport = teams_df.loc[teams_df['team_name'] == home_team, 'sport'].iloc[0]
+    away_sport = teams_df.loc[teams_df['team_name'] == away_team, 'sport'].iloc[0]
+    if home_sport != away_sport:
+        return "The two teams are not in the same sport.", "", {'display': 'block'}, {'display': 'none'}, n_clicks
+
+    # Error check: Validate odds range
+    if -100 < home_odds < 100 or -100 < away_odds < 100:
+        return "Odds cannot be within the range -100 to 100. Please enter valid odds.", "", {'display': 'block'}, {'display': 'none'}, n_clicks
+
+    try:
+        # Validate and prepare odds
+        odds_ratio = adjusted_odds_ratio(home_odds, away_odds)
+        if odds_ratio is None:
+            return "Invalid odds entered.", "", {'display': 'block'}, {'display': 'none'}, n_clicks
+
+        decimal_home_odds = (home_odds / 100 + 1) if home_odds > 0 else (100 / abs(home_odds) + 1)
+        decimal_away_odds = (away_odds / 100 + 1) if away_odds > 0 else (100 / abs(away_odds) + 1)
+
+        # Prepare model inputs
+        inputs = prepare_inputs(home_team, away_team, home_odds, away_odds)
+        home_probs = []
+
+        # Collect predictions from each model
+        for model in ensemble_models:
+            with torch.no_grad():
+                home_prob = model(
+                    inputs['home_team'],
+                    inputs['away_team'],
+                    inputs['game_features'],
+                    inputs['sport_id'])
+                home_probs.append(home_prob.item())
+
+        # Compute the average probabilities
+        avg_home_prob = sum(home_probs) / len(home_probs)
+        avg_away_prob = 1 - avg_home_prob
+
+        # Calculate value bets and EVs
+        model_home_value = (avg_home_prob * decimal_home_odds) - 1
+        model_away_value = (avg_away_prob * decimal_away_odds) - 1
+        home_vb = model_home_value > 0.05
+        away_vb = model_away_value > 0.05
+        ev_home = 10 * ((avg_home_prob * (decimal_home_odds - 1)) - (1 - avg_home_prob))
+        ev_away = 10 * ((avg_away_prob * (decimal_away_odds - 1)) - (1 - avg_away_prob))
+
+    except Exception as e:
+        return f"Error during prediction: {str(e)}", "", {'display': 'block'}, {'display': 'none'}, n_clicks
+
+    # Construct output content
+    col1_content = f"Predicted Home Win Probability: {avg_home_prob:.2%}"
+    col2_content = f"Predicted Away Win Probability: {avg_away_prob:.2%}"
+
+    if home_vb:
+        col1_content += f"\n\nHome Moneyline Bet is a value bet\n\nEV for a $10 wager: ${ev_home:.2f}"
+    else:
+        col1_content += "\n\nHome Moneyline Bet is NOT a value bet"
+
+    if away_vb:
+        col2_content += f"\n\nAway Moneyline Bet is a value bet\n\nEV for a $10 wager: ${ev_away:.2f}"
+    else:
+        col2_content += "\n\nAway Moneyline Bet is NOT a value bet"
+
+    visible_style = {'display': 'block'}
+    return col1_content, col2_content, visible_style, visible_style, 0
+
+if __name__ == '__main__':
+    # Load hyperparameters
+    with open('model_hyperparameters.json', 'r') as f:
+        hyperparams = json.load(f)
+
+    # Load features
+    features_json = [
+    'home_wr_favored.json',
+    'away_wr_favored.json',
+    'home_wr_underdog.json',
+    'away_wr_underdog.json',
+    'home_team_upset.json',
+    'away_team_upset.json']
+
+    # Dictionary to store loaded data
+    features_dict = {}
+    
+    # Iterate over the files and load their contents
+    for features in features_json:
+        with open(features, 'r') as f:
+            features_dict[features] = json.load(f)
+
+    # Load Scaler
+    with open('scaler_params.json', 'r') as f:
+        loaded_params = json.load(f)
+        scaler = StandardScaler()
+        scaler.mean_ = np.array(loaded_params['means'])
+        scaler.scale_ = np.array(loaded_params['stds'])
+    
+    # Run models
+    ensemble_models = load_models('ensemble_modelsNCFBinary2', 10, hyperparams)
+
+    # Start server
+    app.run_server(debug=True)
