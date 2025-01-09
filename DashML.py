@@ -65,18 +65,6 @@ app.layout = html.Div([
     ])
 ])
 
-@app.callback(
-    [Output('output-col-1', 'children'),
-     Output('output-col-2', 'children'),
-     Output('output-col-1', 'style'),
-     Output('output-col-2', 'style'),
-     Output('submit-button', 'n_clicks')],
-    [Input('submit-button', 'n_clicks')],
-    [State('input-home-team', 'value'),
-     State('input-away-team', 'value'),
-     State('input-home-odds', 'value'),
-     State('input-away-odds', 'value')])
-
 # Define the team name replacements
 teamname_replacements = {
     "Liverpool": ["Liverpool"],
@@ -720,6 +708,18 @@ epl_elo_ratings = {
 dropdown = dcc.Dropdown(options=[{'label': team, 'value': team} for team in teams_df['team_name']], searchable=True, placeholder="Select a team", id='team-dropdown')
 # Load team names
 teams = [{'label': team, 'value': team} for team in teams_df['team_name'].unique()]
+
+@app.callback(
+    [Output('output-col-1', 'children'),
+     Output('output-col-2', 'children'),
+     Output('output-col-1', 'style'),
+     Output('output-col-2', 'style'),
+     Output('submit-button', 'n_clicks')],
+    [Input('submit-button', 'n_clicks')],
+    [State('input-home-team', 'value'),
+     State('input-away-team', 'value'),
+     State('input-home-odds', 'value'),
+     State('input-away-odds', 'value')])
 
 def update_output_callback(n_clicks, home_team, away_team, home_odds, away_odds):
     if n_clicks is None or n_clicks == 0:
