@@ -32,7 +32,7 @@ app.layout = html.Div([
         html.P("You can use my trained Neural Collaborative Filtering Model to identify profitable moneyline bets. Simply enter the home and away teams and input the odds. The model will then provide predictions for the home and away team win probabilities based on the information entered, as well as calculate the expected value of placing a $10 wager using the model predicted probability and the given odds.",
                style={'textAlign': 'left'}),
         html.P("Use at your own risk! I am not responsible for any losses resulting from the use of this information!",
-               style={'textAlign': 'left'})
+               style={'textAlign': 'left'}),
         dbc.Row([
             dbc.Col([
                 html.Div("Home Team:", style={'textAlign': 'center'}),
