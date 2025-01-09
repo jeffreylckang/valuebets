@@ -1,1 +1,1 @@
-web: python3 DashML:server
+gunicorn DashML:server
