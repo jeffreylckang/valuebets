@@ -8,7 +8,7 @@ import json
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 from nba_api.stats.endpoints import teamgamelog
-from nba_api.stats.static import teams
+from nba_api.stats.static import teams as nba_teams
 import time
 from datetime import datetime
 import requests
@@ -17,6 +17,14 @@ from pathlib import Path
 
 # Initialize your Dash app using the standard Dash class
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server=app.server
+
+# Load team names from CSV
+teams_df = pd.read_csv('team_names_with_sports_and_ids.csv')
+# Setup the Dropdown in Dash
+dropdown = dcc.Dropdown(options=[{'label': team, 'value': team} for team in teams_df['team_name']], searchable=True, placeholder="Select a team", id='team-dropdown')
+# Load team names
+teams = [{'label': team, 'value': team} for team in teams_df['team_name'].unique()]
 
 app.layout = html.Div([
     dbc.Container([
@@ -158,7 +166,7 @@ class NCFBinary2(nn.Module):
         return home_win_prob
 
 # EPL HELPER FUNCTIONS
-fbref = sd.FBref(leagues="ENG-Premier League", seasons=2024)
+fbref = sd.FBref(leagues="ENG-Premier League", seasons=2024, no_cache=True)
 
 # Fetch the full schedule for the league
 epl_schedule = fbref.read_schedule()
@@ -352,7 +360,7 @@ def nfl_analyze_team_streaks(nfl_team_name, start_date=None, end_date=None):
 
 # NBA HELPER FUNCTIONS
 # Initialize team lookup table
-nba_team_lookup = pd.DataFrame(teams.get_teams())
+nba_team_lookup = pd.DataFrame(nba_teams.get_teams())
 
 # Helper Functions
 def get_nba_team_id_by_fullname(fullname):
@@ -612,9 +620,6 @@ def load_models(model_dir, model_count, hyperparams):
 
     return models
 
-# Load team names from CSV
-teams_df = pd.read_csv('team_names_with_sports_and_ids.csv')
-
 # Load ELO Ratings - Jan 6 2025
 nba_elo_ratings = {
     "Oklahoma City Thunder": 1727.67,
@@ -703,11 +708,6 @@ epl_elo_ratings = {
     "Ipswich": 1377.64,
     "Leicester": 1339.31,
     "Southampton": 1288.65}
-
-# Setup the Dropdown in Dash
-dropdown = dcc.Dropdown(options=[{'label': team, 'value': team} for team in teams_df['team_name']], searchable=True, placeholder="Select a team", id='team-dropdown')
-# Load team names
-teams = [{'label': team, 'value': team} for team in teams_df['team_name'].unique()]
 
 @app.callback(
     [Output('output-col-1', 'children'),
@@ -798,37 +798,37 @@ def update_output_callback(n_clicks, home_team, away_team, home_odds, away_odds)
     visible_style = {'display': 'block'}
     return col1_content, col2_content, visible_style, visible_style, 0
 
+# Load hyperparameters
+with open('model_hyperparameters.json', 'r') as f:
+    hyperparams = json.load(f)
+
+# Load features
+features_json = [
+'home_wr_favored.json',
+'away_wr_favored.json',
+'home_wr_underdog.json',
+'away_wr_underdog.json',
+'home_team_upset.json',
+'away_team_upset.json']
+
+# Dictionary to store loaded data
+features_dict = {}
+
+# Iterate over the files and load their contents
+for features in features_json:
+    with open(features, 'r') as f:
+        features_dict[features] = json.load(f)
+
+# Load Scaler
+with open('scaler_params.json', 'r') as f:
+    loaded_params = json.load(f)
+    scaler = StandardScaler()
+    scaler.mean_ = np.array(loaded_params['means'])
+    scaler.scale_ = np.array(loaded_params['stds'])
+
+# Run models
+ensemble_models = load_models('ensemble_modelsNCFBinary2', 10, hyperparams)
+
 if __name__ == '__main__':
-    # Load hyperparameters
-    with open('model_hyperparameters.json', 'r') as f:
-        hyperparams = json.load(f)
-
-    # Load features
-    features_json = [
-    'home_wr_favored.json',
-    'away_wr_favored.json',
-    'home_wr_underdog.json',
-    'away_wr_underdog.json',
-    'home_team_upset.json',
-    'away_team_upset.json']
-
-    # Dictionary to store loaded data
-    features_dict = {}
-    
-    # Iterate over the files and load their contents
-    for features in features_json:
-        with open(features, 'r') as f:
-            features_dict[features] = json.load(f)
-
-    # Load Scaler
-    with open('scaler_params.json', 'r') as f:
-        loaded_params = json.load(f)
-        scaler = StandardScaler()
-        scaler.mean_ = np.array(loaded_params['means'])
-        scaler.scale_ = np.array(loaded_params['stds'])
-    
-    # Run models
-    ensemble_models = load_models('ensemble_modelsNCFBinary2', 10, hyperparams)
-
     # Start server
     app.run_server(debug=True)
