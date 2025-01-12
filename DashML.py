@@ -29,7 +29,7 @@ teams = [{'label': team, 'value': team} for team in teams_df['team_name'].unique
 app.layout = html.Div([
     dbc.Container([
         html.H1("ML Model to Identify Value Bets", style={'textAlign': 'center'}),
-        html.P("You can use my trained model to identify profitable moneyline bets. Simply enter the home and away teams and input the odds. The model will then provide predictions for the home and away team win probabilities based on the information entered, as well as calculate the expected value of placing a $10 wager using the model predicted probability and the given odds.",
+        html.P("You can use my trained Neural Collaborative Filtering Model to identify profitable moneyline bets. Simply enter the home and away teams and input the odds. The model will then provide predictions for the home and away team win probabilities based on the information entered, as well as calculate the expected value of placing a $10 wager using the model predicted probability and the given odds.",
                style={'textAlign': 'left'}),
         dbc.Row([
             dbc.Col([
