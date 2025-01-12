@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Initialize your Dash app using the standard Dash class
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-server=app.server
+#server=app.server
 
 # Load team names from CSV
 teams_df = pd.read_csv('team_names_with_sports_and_ids.csv')
@@ -29,9 +29,7 @@ teams = [{'label': team, 'value': team} for team in teams_df['team_name'].unique
 app.layout = html.Div([
     dbc.Container([
         html.H1("ML Model to Identify Value Bets", style={'textAlign': 'center'}),
-        html.P("You can use my trained Neural Collaborative Filtering Model to identify profitable moneyline bets. Simply enter the home and away teams and input the odds. The model will then provide predictions for the home and away team win probabilities based on the information entered, as well as calculate the expected value of placing a $10 wager using the model predicted probability and the given odds.",
-               style={'textAlign': 'left'}),
-        html.P("Use at your own risk! I am not responsible for any losses resulting from the use of this information!",
+        html.P("You can use my trained model to identify profitable moneyline bets. Simply enter the home and away teams and input the odds. The model will then provide predictions for the home and away team win probabilities based on the information entered, as well as calculate the expected value of placing a $10 wager using the model predicted probability and the given odds.",
                style={'textAlign': 'left'}),
         dbc.Row([
             dbc.Col([
@@ -346,13 +344,13 @@ def nfl_analyze_team_streaks(nfl_team_name, start_date=None, end_date=None):
     nfl_away_games_non_draw = [game for game in nfl_away_games if game["team_score"] != game["opponent_score"]]
 
     # Debug: Print the last 3 home and away games (excluding draws)
-    print("\nLast 3 Home Games (Excluding Draws):")
-    for game in nfl_home_games_non_draw[:3]:  # Most recent 3 home games
-        print(f"Date: {game['date']}, Opponent: {game['opponent']}, Score: {game['team_score']}-{game['opponent_score']}, Win: {game['win']}")
+    # print("\nLast 3 Home Games (Excluding Draws):")
+    # for game in nfl_home_games_non_draw[:3]:  # Most recent 3 home games
+        # print(f"Date: {game['date']}, Opponent: {game['opponent']}, Score: {game['team_score']}-{game['opponent_score']}, Win: {game['win']}")
 
-    print("\nLast 3 Away Games (Excluding Draws):")
-    for game in nfl_away_games_non_draw[:3]:  # Most recent 3 away games
-        print(f"Date: {game['date']}, Opponent: {game['opponent']}, Score: {game['team_score']}-{game['opponent_score']}, Win: {game['win']}")
+    # print("\nLast 3 Away Games (Excluding Draws):")
+    # for game in nfl_away_games_non_draw[:3]:  # Most recent 3 away games
+    #     print(f"Date: {game['date']}, Opponent: {game['opponent']}, Score: {game['team_score']}-{game['opponent_score']}, Win: {game['win']}")
 
     # Calculate streaks for home and away games
     nfl_home_streak_metrics = calculate_nfl_streaks(nfl_home_games_non_draw)
@@ -481,7 +479,8 @@ def scale_features(features_dict, home_team, away_team, home_odds, away_odds, lo
             ateam_w_streak = int(nba_away_stats['NBA_WIN_STREAK_3'].iloc[-1])
             ateam_l_streak = int(nba_away_stats['NBA_LOSS_STREAK_3'].iloc[-1])
         elif sport_id == 0:  # NFL
-            home_streaks, away_streaks = nfl_analyze_team_streaks(home_team), nfl_analyze_team_streaks(away_team)
+            home_streaks, _ = nfl_analyze_team_streaks(home_team)
+            away_streaks, _ = nfl_analyze_team_streaks(away_team)
             hteam_w_streak = int(home_streaks['win_streak_3'])
             hteam_l_streak = int(home_streaks['loss_streak_3'])
             ateam_w_streak = int(away_streaks['win_streak_3'])
@@ -499,6 +498,10 @@ def scale_features(features_dict, home_team, away_team, home_odds, away_odds, lo
         away_favored_by_elo = int(away_team_elo > home_team_elo)
         home_odds_elo_mismatch = int(home_favored_by_odds != home_favored_by_elo)
         away_odds_elo_mismatch = int(away_favored_by_odds != away_favored_by_elo)
+
+        print(type(features_dict['home_wr_favored.json']))
+        print(f"Elo Ratings for Sport {sport_id}: {elo_ratings.get(sport_id)}")
+        print(f"Elo Diff: {elo_diff}")
 
         # Extract unscaled features
         unscaled_features = [
