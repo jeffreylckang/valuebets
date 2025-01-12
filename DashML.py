@@ -17,7 +17,7 @@ from pathlib import Path
 
 # Initialize your Dash app using the standard Dash class
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-#server=app.server
+server=app.server
 
 # Load team names from CSV
 teams_df = pd.read_csv('team_names_with_sports_and_ids.csv')
