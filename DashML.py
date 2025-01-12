@@ -298,9 +298,9 @@ def extract_nfl_recent_games(scoreboard_data, team_name, n_games=18):
     nfl_recent_games = sorted(nfl_recent_games, key=lambda x: x['date'], reverse=True)
 
     # Debugging after sorting
-    print("\nExtracted Games After Sorting:")
-    for game in nfl_recent_games:
-        print(f"Date: {game['date']}, Opponent: {game['opponent']}, Home/Away: {game['home_away']}, Win: {game['win']}")
+    # print("\nExtracted Games After Sorting:")
+    # for game in nfl_recent_games:
+        # print(f"Date: {game['date']}, Opponent: {game['opponent']}, Home/Away: {game['home_away']}, Win: {game['win']}")
         
     return nfl_recent_games[:n_games]  # Return only the most recent `n_games`
 
@@ -500,10 +500,6 @@ def scale_features(features_dict, home_team, away_team, home_odds, away_odds, lo
         away_favored_by_elo = int(away_team_elo > home_team_elo)
         home_odds_elo_mismatch = int(home_favored_by_odds != home_favored_by_elo)
         away_odds_elo_mismatch = int(away_favored_by_odds != away_favored_by_elo)
-
-        print(type(features_dict['home_wr_favored.json']))
-        print(f"Elo Ratings for Sport {sport_id}: {elo_ratings.get(sport_id)}")
-        print(f"Elo Diff: {elo_diff}")
 
         # Extract unscaled features
         unscaled_features = [
