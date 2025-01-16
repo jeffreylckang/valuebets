@@ -14,6 +14,8 @@ from datetime import datetime
 import requests
 import soccerdata as sd
 from pathlib import Path
+from google.cloud import storage
+import re
 
 # Initialize your Dash app using the standard Dash class
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -96,7 +98,8 @@ teamname_replacements = {
     "Wolves": ["Wolves"],
     "Ipswich": ["Ipswich Town"],
     "Leicester": ["Leicester City"],
-    "Southampton": ["Southampton"]}
+    "Southampton": ["Southampton"],
+}
 
 # Function to get canonical team name or variations
 def get_canonical_team_name(input_team_name, replacements):
@@ -298,9 +301,9 @@ def extract_nfl_recent_games(scoreboard_data, team_name, n_games=18):
     nfl_recent_games = sorted(nfl_recent_games, key=lambda x: x['date'], reverse=True)
 
     # Debugging after sorting
-    # print("\nExtracted Games After Sorting:")
-    # for game in nfl_recent_games:
-        # print(f"Date: {game['date']}, Opponent: {game['opponent']}, Home/Away: {game['home_away']}, Win: {game['win']}")
+    print("\nExtracted Games After Sorting:")
+    for game in nfl_recent_games:
+        print(f"Date: {game['date']}, Opponent: {game['opponent']}, Home/Away: {game['home_away']}, Win: {game['win']}")
         
     return nfl_recent_games[:n_games]  # Return only the most recent `n_games`
 
@@ -334,7 +337,7 @@ def nfl_analyze_team_streaks(nfl_team_name, start_date=None, end_date=None):
     """
     Analyze home and away streaks for a given NFL team.
     """
-    nfl_scoreboard_data = fetch_nfl_scoreboard_data(start_date=20241201, end_date=20250131)
+    nfl_scoreboard_data = fetch_nfl_scoreboard_data(start_date=20241201, end_date=20250215)
     nfl_recent_games = extract_nfl_recent_games(nfl_scoreboard_data, nfl_team_name)
 
     # Separate home and away games
@@ -501,6 +504,10 @@ def scale_features(features_dict, home_team, away_team, home_odds, away_odds, lo
         home_odds_elo_mismatch = int(home_favored_by_odds != home_favored_by_elo)
         away_odds_elo_mismatch = int(away_favored_by_odds != away_favored_by_elo)
 
+        print(type(features_dict['home_wr_favored.json']))
+        print(f"Elo Ratings for Sport {sport_id}: {elo_ratings.get(sport_id)}")
+        print(f"Elo Diff: {elo_diff}")
+
         # Extract unscaled features
         unscaled_features = [
             hteam_w_streak, hteam_l_streak, ateam_w_streak, ateam_l_streak,
@@ -623,94 +630,142 @@ def load_models(model_dir, model_count, hyperparams):
 
     return models
 
-# Load ELO Ratings - Jan 6 2025
-nba_elo_ratings = {
-    "Oklahoma City Thunder": 1727.67,
-    "Cleveland Cavaliers": 1689.42,
-    "Boston Celtics": 1683.85,
-    "New York Knicks": 1632.22,
-    "Denver Nuggets": 1592.67,
-    "Dallas Mavericks": 1585.23,
-    "Houston Rockets": 1578.68,
-    "Los Angeles Clippers": 1545.26,
-    "Minnesota Timberwolves": 1554.03,
-    "Indiana Pacers": 1551.24,
-    "Memphis Grizzlies": 1561.02,
-    "Los Angeles Lakers": 1525.59,
-    "Orlando Magic": 1514.48,
-    "Milwaukee Bucks": 1524.36,
-    "Golden State Warriors": 1506.90,
-    "Sacramento Kings": 1524.15,
-    "Miami Heat": 1482.19,
-    "Philadelphia 76ers": 1486.01,
-    "Atlanta Hawks": 1480.56,
-    "Phoenix Suns": 1474.09,
-    "San Antonio Spurs": 1465.75,
-    "Chicago Bulls": 1447.29,
-    "Detroit Pistons": 1447.10,
-    "Utah Jazz": 1439.04,
-    "Brooklyn Nets": 1368.24,
-    "Portland Trail Blazers": 1331.90,
-    "New Orleans Pelicans": 1344.04,
-    "Toronto Raptors": 1323.88,
-    "Charlotte Hornets": 1291.98,
-    "Washington Wizards": 1247.57}
+# Load ELO Ratings
+BASE_URL = "https://storage.googleapis.com/elo_bucket_dash"
 
-nfl_elo_ratings = {
-    "Kansas City Chiefs": 1663.60,
-    "Detroit Lions": 1633.90,
-    "Buffalo Bills": 1642.03,
-    "Baltimore Raves": 1636.80,
-    "Philadelphia Eagles": 1628.26,
-    "Minnesota Vikings": 1571.93,
-    "Green Bay Packers": 1578.91,
-    "Cincinnati Bengals": 1551.59,
-    "Tampa Bay Buccaneers": 1549.08,
-    "Pittsburgh Steelers": 1535.29,
-    "Los Angeles Rams": 1524.62,
-    "Los Angeles Chargers": 1534.40,
-    "Denver Broncos": 1528.54,
-    "Seattle Seahawks": 1515.43,
-    "San Francisco 49ers": 1533.09,
-    "Washington Commanders": 1491.04,
-    "Miami Dolphins": 1511.25,
-    "Houston Texans": 1496.34,
-    "Dallas Cowboys": 1495.64,
-    "Indianapolis Colts": 1453.56,
-    "Atlanta Falcons": 1441.19,
-    "Arizona Cardinals": 1438.39,
-    "New Orleans Saints": 1447.17,
-    "New York Jets": 1428.28,
-    "Cleveland Brows": 1408.85,
-    "Jacksonville Jaguars": 1420.75,
-    "Las Vegas Raiders": 1409.40,
-    "Chicago Bears": 1411.22,
-    "New England Patriots": 1398.20,
-    "Tennessee Titans": 1384.54,
-    "New York Giants": 1377.40,
-    "Carolina Panthers": 1359.33}
+# Object names to fetch
+OBJECT_NAMES = [
+    "nba/nba_elo_ratings.json",
+    "nfl/nfl_elo_ratings.json",
+    "epl/epl_elo_ratings.json"
+]
 
-epl_elo_ratings = {
-    "Liverpool": 1707.96,
-    "Arsenal": 1693.95,
-    "Manchester City": 1646.77,
-    "Newcastle": 1583.88,
-    "Chelsea": 1581.35,
-    "Aston Villa": 1524.47,
-    "Nottingham": 1525.99,
-    "Bournemouth": 1528.34,
-    "Tottenham": 1514.64,
-    "Fulham": 1501.51,
-    "Brighton": 1488.99,
-    "Manchester Utd": 1469.88,
-    "Crystal Palace": 1474.63,
-    "Brentford": 1466.56,
-    "West Ham": 1440.42,
-    "Everton": 1430.22,
-    "Wolves": 1414.84,
-    "Ipswich": 1377.64,
-    "Leicester": 1339.31,
-    "Southampton": 1288.65}
+# Team name mapping for normalization
+team_name_mapping = {
+    "Kansas City": "Kansas City Chiefs",
+    "Detroit": "Detroit Lions",
+    "Buffalo": "Buffalo Bills",
+    "Philadelphia": "Philadelphia Eagles",
+    "Baltimore": "Baltimore Raves",
+    "Minnesota": "Minnesota Vikings",
+    "Green Bay": "Green Bay Packers",
+    "Cincinnati": "Cincinnati Bengals",
+    "LA Rams": "Los Angeles Rams",
+    "Pittsburgh": "Pittsburgh Steelers",
+    "Tampa Bay": "Tampa Bay Buccaneers",
+    "Seattle": "Seattle Seahawks",
+    "Denver": "Denver Broncos",
+    "Washington": "Washington Commanders",
+    "LA Chargers": "Los Angeles Chargers",
+    "San Francisco": "San Francisco 49ers",
+    "Houston": "Houston Texans",
+    "Miami": "Miami Dolphins",
+    "Dallas": "Dallas Cowboys",
+    "Indianapolis": "Indianapolis Colts",
+    "Atlanta": "Atlanta Falcons",
+    "Arizona": "Arizona Cardinals",
+    "New Orleans": "New Orleans Saints",
+    "NY Jets": "New York Jets",
+    "Cleveland": "Cleveland Brows",
+    "Jacksonville": "Jacksonville Jaguars",
+    "Las Vegas": "Las Vegas Raiders",
+    "Chicago": "Chicago Bears",
+    "New England": "New England Patriots",
+    "Tennessee": "Tennessee Titans",
+    "NY Giants": "New York Giants",
+    "Carolina": "Carolina Panthers",
+    "Thunder": "Oklahoma City Thunder",
+    "Cavaliers": "Cleveland Cavaliers",
+    "Celtics": "Boston Celtics",
+    "Knicks": "New York Knicks",
+    "Nuggets": "Denver Nuggets",
+    "Mavericks": "Dallas Mavericks",
+    "Rockets": "Houston Rockets",
+    "Clippers": "Los Angeles Clippers",
+    "Timberwolves": "Minnesota Timberwolves",
+    "Pacers": "Indiana Pacers",
+    "Grizzlies": "Memphis Grizzlies",
+    "Lakers": "Los Angeles Lakers",
+    "Magic": "Orlando Magic",
+    "Bucks": "Milwaukee Bucks",
+    "Warriors": "Golden State Warriors",
+    "Kings": "Sacramento Kings",
+    "Heat": "Miami Heat",
+    "76ers": "Philadelphia 76ers",
+    "Hawks": "Atlanta Hawks",
+    "Suns": "Phoenix Suns",
+    "Spurs": "San Antonio Spurs",
+    "Bulls": "Chicago Bulls",
+    "Pistons": "Detroit Pistons",
+    "Jazz": "Utah Jazz",
+    "Nets": "Brooklyn Nets",
+    "Trail Blazers": "Portland Trail Blazers",
+    "Pelicans": "New Orleans Pelicans",
+    "Raptors": "Toronto Raptors",
+    "Hornets": "Charlotte Hornets",
+    "Wizards": "Washington Wizards",
+    "Liverpool": "Liverpool",
+    "Arsenal": "Arsenal",
+    "Man City": "Manchester City",
+    "Newcastle": "Newcastle",
+    "Chelsea": "Chelsea",
+    "Aston Villa": "Aston Villa",
+    "Nottm Forest": "Nottingham",
+    "Bournemouth": "Bournemouth",
+    "Tottenham": "Tottenham",
+    "Brighton": "Brighton",
+    "Fulham": "Fulham",
+    "Crystal Palace": "Crystal Palace",
+    "Man Utd": "Manchester Utd",
+    "Brentford": "Brentford",
+    "West Ham": "West Ham",
+    "Everton": "Everton",
+    "Wolves": "Wolves",
+    "Ipswich": "Ipswich",
+    "Leicester": "Leicester",
+    "Southampton": "Southampton"
+}
+
+def fetch_public_objects(base_url, object_names):
+    data = {}
+    for object_name in object_names:
+        url = f"{base_url}/{object_name}"
+        print(f"Fetching data from {url}...")
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            data[object_name] = response.json()
+            print(f"Data fetched successfully for {object_name}")
+        else:
+            print(f"Error fetching {object_name}: {response.status_code}, {response.text}")
+    return data
+
+def extract_elo_map(raw_data, team_name_mapping):
+    """Extract the second floating number from ELO strings and map team names."""
+    processed_data = {}
+    for raw_team_name, ratings in raw_data.items():
+        # Map the raw team name to the desired name
+        team_name = team_name_mapping.get(raw_team_name.strip(), raw_team_name.strip())
+        # Extract all floating-point numbers
+        floats = re.findall(r"[-+]?\d*\.\d+|\d+", ratings.replace(",", ""))
+        if len(floats) >= 2:
+            # Take the second floating number (index 1 in zero-based indexing)
+            processed_data[team_name] = float(floats[1])
+        else:
+            print(f"Insufficient data for team {team_name}: {ratings}")
+    return processed_data
+
+# Fetch all ELO data
+elo_data = fetch_public_objects(BASE_URL, OBJECT_NAMES)
+
+# Process the datasets with team name mapping
+nba_elo_raw = elo_data.get("nba/nba_elo_ratings.json", {})
+nfl_elo_raw = elo_data.get("nfl/nfl_elo_ratings.json", {})
+epl_elo_raw = elo_data.get("epl/epl_elo_ratings.json", {})
+
+nba_elo_ratings = extract_elo_map(nba_elo_raw, team_name_mapping)
+nfl_elo_ratings = extract_elo_map(nfl_elo_raw, team_name_mapping)
+epl_elo_ratings = extract_elo_map(epl_elo_raw, team_name_mapping)
 
 @app.callback(
     [Output('output-col-1', 'children'),
